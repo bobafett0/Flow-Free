@@ -12,13 +12,14 @@ public class solver {
 
 	public Stack<Gridspot> _points, _saved;
 	private static int frameWidth = 800, frameHieght = 800;
-	private teller _screen;
+	public teller _screen;
 	public Gridspot[][] _grid;
 	private HashMap<Gridspot, Integer> _map;
 	public ArrayList<pair<Gridspot,Gridspot>> _pairs;
 	private HashMap<pair<Gridspot,Gridspot>,Integer> _min;
 	public HashMap<pair<Gridspot,Gridspot>,Integer> _max;
 	private HashSet<ArrayList<Gridspot>> _paths;
+	public boolean isSolvable = true;
 
 	// What I want - pair<Gridspot,Gridspot> -> max #distance to include
 	// Need - set Quacks.
@@ -30,8 +31,9 @@ public class solver {
 	
 	public solver () throws InterruptedException
 	{
-////		_screen = new teller(maze(5), 150);
-		_screen = new teller( maze(5),150);
+		_screen = new teller(maze(5), 150);
+//		_screen = new teller( maze(5),150);
+//		_screen = new teller(150);
 		_grid = _screen.getGrid();
 		_points = _screen.getpairL();_saved = new Stack<Gridspot>();
 		_min = new HashMap<pair<Gridspot,Gridspot>,Integer>(); 
@@ -53,6 +55,7 @@ public class solver {
 		if (!_map.containsKey(temp2))
 		{
 			System.out.println("The puzzle is unsolvable.");
+			isSolvable = false;
 			return;
 		}
 //		ArrayList<Gridspot> temp = optimalPath(temp1,temp2);
@@ -77,6 +80,8 @@ public class solver {
 		if(sum < 0)
 		{
 			System.out.println("The puzzle is unsolvable.");
+			isSolvable = false;
+			return;
 		}
 		System.out.println("Sum is :"+sum);
 		for(int i = 0; i < _pairs.size(); i++)
@@ -247,24 +252,28 @@ public class solver {
 	{
 		ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> sam = 
 				new ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>>();
-		for(int i = 0; i < dem-1; i++)
-		{
-//			System.out.println(i);
-			sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-			( new pair<Integer,Integer>(new Integer(i),new Integer(0)),
-			  new pair<Integer,Integer>(new Integer(i),new Integer(dem-1))));
-		}
-//		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-//		( new pair<Integer,Integer>(new Integer(dem-2),new Integer(dem-4)),
-//		  new pair<Integer,Integer>(new Integer(dem-3),new Integer(dem-1))));
-//		
-//		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-//		( new pair<Integer,Integer>(new Integer(dem-3),new Integer(dem-3)),
-//		  new pair<Integer,Integer>(new Integer(0),new Integer(dem-2))));
-//		
-//		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-//		( new pair<Integer,Integer>(new Integer(dem-1),new Integer(dem-3)),
-//		  new pair<Integer,Integer>(new Integer(dem-1),new Integer(dem-1))));
+//		for(int i = 0; i < dem-1; i++)
+//		{
+////			System.out.println(i);
+//			sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+//			( new pair<Integer,Integer>(new Integer(i),new Integer(0)),
+//			  new pair<Integer,Integer>(new Integer(i),new Integer(dem-1))));
+//		}
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(1),new Integer(1)),
+		  new pair<Integer,Integer>(new Integer(1),new Integer(dem-1))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(0),new Integer(dem-1)),
+		  new pair<Integer,Integer>(new Integer(2),new Integer(dem-2))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(dem-2),new Integer(1)),
+		  new pair<Integer,Integer>(new Integer(2),new Integer(2))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(2),new Integer(dem-1)),
+		  new pair<Integer,Integer>(new Integer(dem-1),new Integer(dem-2))));
 		
 		return sam;
 	}
