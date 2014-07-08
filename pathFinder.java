@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,6 +15,9 @@ public class pathFinder {
 	private HashSet<ArrayList<Gridspot>> _paths;	
 	private ArrayList<ArrayList<Gridspot>> _reduxed;
 	private ArrayList<Gridspot>[] sorted;
+	public  ArrayList<ArrayList<Gridspot>>[] _hashSorted;
+	public  ArrayList<ArrayList<Gridspot>>[][] _colors;
+	public boolean isSolve = true;
 //	private HashSet<ArrayList<pair<Integer,Integer> > > _paths;	
 	
 	public pathFinder() throws InterruptedException
@@ -23,6 +27,11 @@ public class pathFinder {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if(!a.isSolvable)
+		{
+			isSolve = false;
+			return;
 		}
 //		_collection = new PriorityQueue[a._grid.length][a._grid.length];
 //		for(int i = 0; i < _collection.length; i++)
@@ -44,10 +53,117 @@ public class pathFinder {
 //		showPaths();
 	    reducePaths();
 //	    showPaths();
-	    sorted = sortPaths();
-	    showSorted();
+	    double startTime = System.nanoTime();
+	    _hashSorted = hashSort();
+	    double endTime = System.nanoTime();
+	    System.out.println(endTime - startTime);
+	    
+//	    startTime = System.nanoTime();
+//	    sorted = sortPaths();
+//	    endTime = System.nanoTime();
+//	    System.out.println(endTime - startTime);
+	    //showSorted();
+	    _colors = ((ArrayList<ArrayList<Gridspot>>[][])new ArrayList[_pairs.size()][]); 
+		System.out.println(_hashSorted.length);
+		for(int i = 0; i < _pairs.size(); i++)
+		  _colors[i] = (ArrayList<ArrayList<Gridspot>>[])new ArrayList[_hashSorted.length]; 
+		    
+	    organizeHash();
+
+	    //showOrgan(_colors);
 	    
 	    
+	}
+	
+	private void showOrgan(ArrayList<ArrayList<Gridspot>>[][] a) throws InterruptedException
+	{
+	  for(int i = 0; i < a.length; i++)
+	    for(int u = 0; u < a[i].length; u++)
+	      if(a[i][u] != null)
+	      for(int y = 0; y < a[i][u].size(); y++)
+	      {
+	        for(int e = 0; e < a[i][u].get(y).size(); e++)
+	        {
+	          a[i][u].get(y).get(e).setOcc(a[i][u].get(y).get(0).getColor());
+			  Thread.sleep(200);
+	        }
+	        for(int e = a[i][u].get(y).size()-2; e > 0; e--)
+	        {
+	          a[i][u].get(y).get(e).setUnOcc();
+	        }
+	        
+	      }
+	        
+		
+	}
+	
+	private void organizeHash()
+	{
+	  for(int i = 0; i < _hashSorted.length ;i++)
+	    if( _hashSorted[i] != null)
+		  for(int x = 0; x < _hashSorted[i].size();x++)
+		  {
+//		    System.out.println("Indy!!"+matchColor(_hashSorted[i].get(x).get(0).getColor()));
+		    if (_colors[matchColor(_hashSorted[i].get(x).get(0).getColor())][i] == null)
+		      _colors[matchColor(_hashSorted[i].get(x).get(0).getColor())][i] = new ArrayList<ArrayList<Gridspot>>();
+		    	  
+		      _colors[matchColor(_hashSorted[i].get(x).get(0).getColor())][i].add(_hashSorted[i].get(x));
+			}
+	}
+	
+	private int matchColor(Color match)
+	{
+		for(int i = 0; i < _pairs.size(); i++)
+		{
+			if(_pairs.get(i).getL().getColor() == match)
+			  return i;
+		}
+		return -1;
+	}
+	
+	
+	private void showHashShort( ArrayList<ArrayList<Gridspot>>[] hashSorted) throws InterruptedException
+	{
+		for(int i = 0; i < hashSorted.length ;i++)
+		  if( hashSorted[i] != null)
+			for(int x = 0; x < hashSorted[i].size();x++)
+			{
+				for(int u = 0; u < hashSorted[i].get(x).size(); u++)
+				{
+					hashSorted[i].get(x).get(u).setOcc(hashSorted[i].get(x).get(0).getColor());
+					Thread.sleep(200);
+//					System.out.println("On index "+u);
+				}
+//				System.out.println("the size is "+hashSorted[i].get(x).size());
+				for(int u = hashSorted[i].get(x).size()-2; u > 0; u--)
+				{
+					hashSorted[i].get(x).get(u).setUnOcc();
+					Thread.sleep(200);
+				}
+//				System.out.println("The bucket size is "+hashSorted[i].size());
+			}
+	}
+	
+	private void showHashLong( ArrayList<ArrayList<Gridspot>>[] hashSorted) throws InterruptedException
+	{
+		for(int i = hashSorted.length-1; i >= 0 ;i--)
+		  if( hashSorted[i] != null)
+			for(int x = 0; x < hashSorted[i].size();x++)
+			{
+				for(int u = 0; u < hashSorted[i].get(x).size(); u++)
+				{
+					hashSorted[i].get(x).get(u).setOcc(hashSorted[i].get(x).get(0).getColor());
+					Thread.sleep(200);
+//					System.out.println("On index "+u);
+				}
+//				System.out.println("the size is "+hashSorted[i].get(x).size());
+				for(int u = hashSorted[i].get(x).size()-2; u > 0; u--)
+				{
+					hashSorted[i].get(x).get(u).setUnOcc();
+					Thread.sleep(200);
+				}
+//				System.out.println("The bucket size is "+hashSorted[i].size());
+			}
 	}
 	
 	
@@ -87,13 +203,54 @@ public class pathFinder {
 	    }
 	}
 	
+	private ArrayList<ArrayList<Gridspot>>[] hashSort()
+	{
+		int min = findMin(sorted);
+		int max = findMax(sorted);
+		ArrayList<ArrayList<Gridspot>>[] hash = (ArrayList<ArrayList<Gridspot>>[])new ArrayList[max-min+1];
+		for(int i = 0; i < sorted.length; i++)
+		{
+
+			if (hash[sorted[i].size()-min] == null)
+			{
+				hash[sorted[i].size()-min] = new ArrayList<ArrayList<Gridspot>>();
+//				hash[sorted[i].size()-min].get(index);
+			}
+			hash[sorted[i].size()-min].add(sorted[i]); 
+		}
+		return hash;
+	}
+	
+	private int findMax (ArrayList<Gridspot>[] search)
+	{
+		int max = search[0].size();
+		for(int i = 1; i < search.length; i++)
+		{
+			if(max < search[i].size())
+				max = search[i].size();
+		}
+		return max;
+	}
+	
+	private int findMin (ArrayList<Gridspot>[] search)
+	{
+		int min = search[0].size();
+		for(int i = 1; i < search.length; i++)
+		{
+			if(min > search[i].size())
+				min = search[i].size();
+		}
+		return min;
+	}
+	
+	
 	private ArrayList<Gridspot>[] sortPaths()
 	{
 		for(int i = 0; i < sorted.length; i++)
 		{
 			for(int u = i; u < sorted.length; u++)
 			{
-				if(((ArrayList<Gridspot>) sorted[u]).size() < ((ArrayList<Gridspot>) sorted[i]).size())
+				if(((ArrayList<Gridspot>) sorted[u]).size() > ((ArrayList<Gridspot>) sorted[i]).size())
 				{
 					ArrayList<Gridspot> tom = (ArrayList<Gridspot>)sorted[u];
 					sorted[u] = sorted[i];
@@ -106,7 +263,6 @@ public class pathFinder {
 	
 	private void reducePaths()
 	{
-		
 		HashSet<ArrayList<Gridspot>> reduced = new HashSet<ArrayList<Gridspot>>();
 		Iterator<ArrayList<Gridspot>> it = _paths.iterator();
 	    while (it.hasNext()) {
