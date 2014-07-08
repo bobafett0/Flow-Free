@@ -23,6 +23,8 @@ public class teller {
 	private Stack<Gridspot> _spaces;
 //	private Set<pair<Integer,Integer>> collec;
 	//public int 
+	
+	
 	public teller (int squWidth) throws InterruptedException
 	{
 		game(squWidth);
