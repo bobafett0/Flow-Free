@@ -436,5 +436,5 @@ public class solver {
 		new solver();
 	}
 
-	
+	//
 }
