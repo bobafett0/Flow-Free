@@ -1,10 +1,10 @@
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 import wheelsunh.users.Frame;
-
-
 
 public class bruteForce {
 	private static int frameWidth = 800, frameHieght = 800;
@@ -13,6 +13,7 @@ public class bruteForce {
 	public int[] _indexes;
 	public ArrayList<ArrayList<Gridspot>>[][] buck;
 	public ArrayList<Gridspot>[] _pathsPlaced;
+	public ArrayList<ArrayList<Gridspot>[]> _configurations;
 	public HashMap <ArrayList<Gridspot>,Integer> _visited; 
 	public boolean canSolve;
 	public int deleteIndex = 0; // The index that represents the only color that paths may be deleted from at one time.
@@ -33,79 +34,62 @@ public class bruteForce {
 			_indexes[i] = 0;
 		}
 		_pathsPlaced = new ArrayList[buck.length];
-		
+		_configurations = new ArrayList<ArrayList<Gridspot>[]>();
 		_visited = new HashMap <ArrayList<Gridspot>,Integer>();
-//		for(int i = 0; i < 10; i++)
-//		{
 		swwitch();
+		try
+		{
 		canSolve = isSolvable(0);
-//		  if(canSolve)
-//		    break;
-//		  
-//		  for(int x = 0; x < buck[0].length; x++)
-//		    if(buck[i][x] != null) 
-//			  for(int u = 0; u < buck[0][x].size(); u++)
-//			    {
-//				  buck[0][x].remove(u);
-//				  break;
-//				}
-//		}
+		}
+		catch(Exception e)
+		{
+		canSolve = false;
+		}
 		System.out.println(canSolve);
 		
 	}
 	
-	// Notes:
-	/*
-	 * Right now, if it cannot find a suitable path, it will simply recurse to the previous, 
-	 * and force it to use a different path than before
-	 * 
-	 * points:
-	 * 
-	 *  It should only recurse forward, with a modulus
-	 *  Meaning, if it is on the last color, it should go back to the first
-	 *  
-	 *  If a suitable path is not found, it should clear the previous path
-	 *  and then retry (recurse with the same value).
-	 *  
-	 *  isSolvable is a boolean, so it should be treated as such even within its own method
-	 *  
-	 */
+
 	private boolean isSolvable(int i) throws InterruptedException
 	{
-	  
-//	  if(isEmpty(i))
-//	    return false;
-
 	  if(_pathsPlaced[i] != null)
-		  clearPath(_pathsPlaced[i]);
+	    clearPath(_pathsPlaced[i]);
 
+	  Random rand = new Random();
 	  for(int x = 0; x < buck[i].length; x++)
 	   if(buck[i][x] != null) 
 		for(int u = 0; u < buck[i][x].size(); u++)
 		{
-//		  if(isEmpty(i))
-//		    return false;
-		  if(!canGo( buck[i][x].get(u)) ) // if the current path didn't work out
+	      int atI = rand.nextInt(buck[i][x].size());
+		  ArrayList<Gridspot> triy =   buck[i][x].get(atI);
+		  HashSet <ArrayList<Gridspot>> visited = new HashSet <ArrayList<Gridspot>>();
+		  
+		  if (visited.add(triy))
 		  {
-		    clearPath(buck[i][x].get(u)); // Clear the path
+		  if(!canGo( triy )) // if the current path didn't work out
+		  {
+		    clearPath(triy); // Clear the path
 		  }
 		  else 
 		  {
 			  if(isSolved())
 				  return true;
-
-			  _pathsPlaced[i] = buck[i][x].get(u);
-
+			  _pathsPlaced[i] = buck[i][x].get(atI);
+			  
 			  if(!isSolvable((i+1)%buck.length)); // move on to the next path and try it
 				  // continue
 			  else
 				  return true;
-			  
- 			  if(isLast(i,x,u))
-			  {
-				clearGrid();
-				return false;
-			  }
+		  }
+		  }
+		  else if(visited.size() == buck[i][x].size())
+		  {
+			clearGrid();
+			return false;
+		  }
+		  else 
+		  {
+			  // continue
 		  }
 		}
 	  // If none of the paths worked
@@ -121,6 +105,17 @@ public class bruteForce {
 	  }
 
 	   	return isSolvable((i+1)%buck.length);		
+	}
+	
+	private boolean filledHalf ()
+	{
+		int counter = 0;
+		for(int i = 0; i < _pathsPlaced.length; i++)
+		{
+			if(_pathsPlaced[i] != null)
+				counter++;
+		}
+		return counter*2 >= _pathsPlaced.length;
 	}
 	
 	private boolean isLast(ArrayList<Gridspot> a, int i)
@@ -265,8 +260,6 @@ public class bruteForce {
 			Gridspot curr = findAdj(prev,null);
 			if(curr == null)
 			{
-				System.out.println("returning false");
-				Thread.sleep(200);
 				return false;
 			}
 			while(curr != _find._pairs.get(i).r)
@@ -320,10 +313,14 @@ public class bruteForce {
 	
 	private void clearGrid()
 	{
+		
 		for(int i = 0; i < _pathsPlaced.length; i++)
 		{
 			if(_pathsPlaced[i] != null)
+			{
 			clearPath(_pathsPlaced[i]);
+			_pathsPlaced[i] = null;
+			}
 		}
 	}
 	
