@@ -37,7 +37,7 @@ public class bruteForce {
 		_visited = new HashMap <ArrayList<Gridspot>,Integer>();
 //		for(int i = 0; i < 10; i++)
 //		{
-//		swwitch();
+		swwitch();
 		canSolve = isSolvable(0);
 //		  if(canSolve)
 //		    break;
@@ -73,8 +73,8 @@ public class bruteForce {
 	private boolean isSolvable(int i) throws InterruptedException
 	{
 	  
-	  if(isEmpty(i))
-	    return false;
+//	  if(isEmpty(i))
+//	    return false;
 
 	  if(_pathsPlaced[i] != null)
 		  clearPath(_pathsPlaced[i]);
@@ -83,8 +83,8 @@ public class bruteForce {
 	   if(buck[i][x] != null) 
 		for(int u = 0; u < buck[i][x].size(); u++)
 		{
-		  if(isEmpty(i))
-		    return false;
+//		  if(isEmpty(i))
+//		    return false;
 		  if(!canGo( buck[i][x].get(u)) ) // if the current path didn't work out
 		  {
 		    clearPath(buck[i][x].get(u)); // Clear the path
@@ -96,23 +96,16 @@ public class bruteForce {
 
 			  _pathsPlaced[i] = buck[i][x].get(u);
 
-			  // Incrementing the visited count for an individual path
-
-			  if(_visited.get(_pathsPlaced[i]) == null)
-			    _visited.put(_pathsPlaced[i], 1);
+			  if(!isSolvable((i+1)%buck.length)); // move on to the next path and try it
+				  // continue
 			  else
-				_visited.put(_pathsPlaced[i], _visited.get(_pathsPlaced[i])+1);
-
+				  return true;
+			  
  			  if(isLast(i,x,u))
 			  {
 				clearGrid();
 				return false;
 			  }
-
-			  if(!isSolvable((i+1)%buck.length)); // move on to the next path and try it
-				  // continue
-			  else
-				  return true;
 		  }
 		}
 	  // If none of the paths worked
@@ -123,11 +116,6 @@ public class bruteForce {
 
 	  if(isLast(_pathsPlaced[i],i))
 	  {			
-//		if(i == deleteIndex)
-//		{
-//    	  buck[i][bucketIndex(i,_pathsPlaced[i])].remove(_pathsPlaced[i]);
-//		  _pathsPlaced[i] = null;
-//		}
 		clearGrid();
 		return false;
 	  }
@@ -195,9 +183,9 @@ public class bruteForce {
       ArrayList<ArrayList<Gridspot>> foundSeco = buck[1][0];
       for(int i = 0; i < buck[1].length; i++)
       {
-  		if(buck[0][i] != null)
+  		if(buck[1][i] != null)
   		{
-  		  foundSeco = buck[0][i];
+  		  foundSeco = buck[1][i];
   		  break;
   		} 
       }
