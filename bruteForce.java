@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 import wheelsunh.users.Frame;
@@ -14,7 +15,7 @@ public class bruteForce {
 	public ArrayList<ArrayList<Gridspot>>[][] buck;
 	public ArrayList<Gridspot>[] _pathsPlaced;
 	public ArrayList<ArrayList<Gridspot>[]> _configurations;
-	public HashMap <ArrayList<Gridspot>,Integer> _visited; 
+	public HashMap <ArrayList<Gridspot>[],Integer> _visited; 
 	public boolean canSolve;
 	public int deleteIndex = 0; // The index that represents the only color that paths may be deleted from at one time.
 
@@ -35,8 +36,8 @@ public class bruteForce {
 		}
 		_pathsPlaced = new ArrayList[buck.length];
 		_configurations = new ArrayList<ArrayList<Gridspot>[]>();
-		_visited = new HashMap <ArrayList<Gridspot>,Integer>();
-		swwitch();
+		_visited = new HashMap <ArrayList<Gridspot>[],Integer>();
+//		swwitch();
 		try
 		{
 		canSolve = isSolvable(0);
@@ -58,53 +59,86 @@ public class bruteForce {
 	  Random rand = new Random();
 	  for(int x = 0; x < buck[i].length; x++)
 	   if(buck[i][x] != null) 
-		for(int u = 0; u < buck[i][x].size(); u++)
-		{
-	      int atI = rand.nextInt(buck[i][x].size());
-		  ArrayList<Gridspot> triy =   buck[i][x].get(atI);
+	   {
+	      int atI;
+          ArrayList<Gridspot> triy;
 		  HashSet <ArrayList<Gridspot>> visited = new HashSet <ArrayList<Gridspot>>();
-		  
-		  if (visited.add(triy))
+	    while(visited.size() < buck[i][x].size() && !isSolved())
+        {
+	      atI = rand.nextInt(buck[i][x].size());
+	      triy =   buck[i][x].get(atI);
+	      if (visited.add(triy))
 		  {
-		  if(!canGo( triy )) // if the current path didn't work out
-		  {
-		    clearPath(triy); // Clear the path
-		  }
-		  else 
-		  {
+		    if(!canGo( triy )) // if the current path didn't work out
+		    {
+		      clearPath(triy); // Clear the path
+		    }
+		    else 
+		    {
 			  if(isSolved())
 				  return true;
 			  _pathsPlaced[i] = buck[i][x].get(atI);
-			  
+
 			  if(!isSolvable((i+1)%buck.length)); // move on to the next path and try it
-				  // continue
+//				  return true;
 			  else
 				  return true;
+		    }
 		  }
-		  }
-		  else if(visited.size() == buck[i][x].size())
-		  {
-			clearGrid();
-			return false;
-		  }
-		  else 
-		  {
-			  // continue
-		  }
-		}
-	  // If none of the paths worked
-	    //clear the previous one
-	    //then attempt again
+	    }
+	   }
 	  if(isSolved())
 		  return true;
 
-	  if(isLast(_pathsPlaced[i],i))
-	  {			
 		clearGrid();
 		return false;
+	}
+	
+	
+	  
+//	  if(hasConfig(_pathsPlaced) == null)
+//		  _visited.put(copyPathsPlaced(),1);
+//	  else if (_visited.get(hasConfig(_pathsPlaced)) < 4 ) 
+//	  {
+//      _visited.put(hasConfig(_pathsPlaced), _visited.get(hasConfig(_pathsPlaced)  ) + 1 );				
+//	  }
+//	  else
+//	  {
+//		  clearGrid();
+//		  return false;
+//	  }
+	  
+	
+	private ArrayList<Gridspot>[] hasConfig (ArrayList<Gridspot>[] a)
+	{
+		Iterator<ArrayList<Gridspot>[]> it = _visited.keySet().iterator();
+		while(it.hasNext())
+		{
+			ArrayList<Gridspot>[] temp = it.next();
+			if (equals(temp,a))
+			  return temp;
+		}
+		return null;
+	}
+	
+	private boolean equals(ArrayList<Gridspot>[] one, ArrayList<Gridspot>[] two)
+	{
+		for(int i = 0; i < one.length; i++)
+		{
+		  if(!one[i].equals(two[i]))
+		    return false;		
+		}
+		return true;		
+	}
+	
+	private ArrayList<Gridspot>[] copyPathsPlaced()
+	{
+	  ArrayList<Gridspot>[] copy = new ArrayList[_pathsPlaced.length];
+	  for(int i = 0; i < copy.length; i++)
+	  {
+		  copy[i] = new ArrayList<Gridspot>(_pathsPlaced[i]);
 	  }
-
-	   	return isSolvable((i+1)%buck.length);		
+	  return copy;		
 	}
 	
 	private boolean filledHalf ()
@@ -118,6 +152,17 @@ public class bruteForce {
 		return counter*2 >= _pathsPlaced.length;
 	}
 	
+	private boolean lastBuck (int i, int c)
+	{
+	  ArrayList<ArrayList<Gridspot>>[] left = buck[i];
+	  for(int u = c+1; u < left.length; u++)
+	  {
+         if(left[u] != null)
+           return false;         
+	  }
+	  return true;
+	}
+	
 	private boolean isLast(ArrayList<Gridspot> a, int i)
 	{
 		int outerI = i; int midI; int innerI;
@@ -128,7 +173,7 @@ public class bruteForce {
 		    for(int y = 0; y < buck[i][u].size(); y++)
 			{
 			  if(buck[i][u].get(y) == a)
-			    return isLast(i,u,y);
+			    return lastBuck(i,u);
 			}
 		  }
 		}
@@ -357,7 +402,7 @@ public class bruteForce {
 		{
 			int fIndx = _indexes[i];
 			int sIndx = _indexes[i+1];
-			System.out.println("The index is "+i+" The bucket is "+fIndx+ " The path is "+ sIndx);
+//			System.out.println("The index is "+i+" The bucket is "+fIndx+ " The path is "+ sIndx);
 			showPath(buck[i][fIndx].get(sIndx));
 		}
 	}
