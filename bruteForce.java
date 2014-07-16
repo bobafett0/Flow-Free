@@ -50,7 +50,7 @@ public class bruteForce {
 		
 	}
 	
-	private boolean isSolvable(int i) throws InterruptedException
+		private boolean isSolvable(int i) throws InterruptedException
 	{
 	  if(_pathsPlaced[i] != null)
 	    clearPath(_pathsPlaced[i]);
@@ -82,7 +82,7 @@ public class bruteForce {
 			  
 //			  if( hasConfig(_pathsPlaced) != null && filledHalf() ) // _visited already has the key, and the grid is half filled or more
 //			  {				  
-//				  if(_visited.get(hasConfig(_pathsPlaced)) < 50)
+//				  if(_visited.get(hasConfig(_pathsPlaced)) < 500000)
 //				  {
 //					  _visited.put(hasConfig(_pathsPlaced), _visited.get(hasConfig(_pathsPlaced)) + 1);
 //				  }
@@ -91,11 +91,12 @@ public class bruteForce {
 //					clearGrid();
 //					return false;
 //				  }
-//				  
 //			  }
+			  hasConfig(_pathsPlaced);
+//			  if(hasConfig(_pathsPlaced) != null);
 //			  else
 //			  {
-//				  _visited.put(copyPathsPlaced(), 1);
+				  _visited.put(_pathsPlaced.clone(), 1);
 //			  }
 
 			  if(!isSolvable((i+1)%buck.length)); // move on to the next path and try it
