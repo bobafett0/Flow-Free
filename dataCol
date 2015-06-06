@@ -1,0 +1,28 @@
+
+public class dataCol {
+
+	public dataCol() throws InterruptedException
+	{
+		bruteForce attempt;
+		int falsee = 0;
+		int truee = 0;
+		for(int i = 0; i < 100; i++)
+		{
+			attempt = new bruteForce();
+			if(attempt.canSolve == true)
+				truee++;
+			else
+				falsee++;
+		}
+		System.out.println("True is "+truee+"false is "+falsee);
+	}
+	
+	
+	
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		new dataCol();
+
+	}
+
+}

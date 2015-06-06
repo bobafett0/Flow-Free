@@ -12,13 +12,14 @@ public class solver {
 
 	public Stack<Gridspot> _points, _saved;
 	private static int frameWidth = 800, frameHieght = 800;
-	private teller _screen;
+	public teller _screen;
 	public Gridspot[][] _grid;
 	private HashMap<Gridspot, Integer> _map;
 	public ArrayList<pair<Gridspot,Gridspot>> _pairs;
 	private HashMap<pair<Gridspot,Gridspot>,Integer> _min;
 	public HashMap<pair<Gridspot,Gridspot>,Integer> _max;
 	private HashSet<ArrayList<Gridspot>> _paths;
+	public boolean isSolvable = true;
 
 	// What I want - pair<Gridspot,Gridspot> -> max #distance to include
 	// Need - set Quacks.
@@ -30,8 +31,9 @@ public class solver {
 	
 	public solver () throws InterruptedException
 	{
-////		_screen = new teller(maze(5), 150);
-		_screen = new teller( maze(5),150);
+		_screen = new teller(maze3(5), 150);
+//		_screen = new teller( maze(5),150);
+//		_screen = new teller(150);
 		_grid = _screen.getGrid();
 		_points = _screen.getpairL();_saved = new Stack<Gridspot>();
 		_min = new HashMap<pair<Gridspot,Gridspot>,Integer>(); 
@@ -52,7 +54,8 @@ public class solver {
 		temp2.setOcc(temp2.getColor());
 		if (!_map.containsKey(temp2))
 		{
-			System.out.println("The puzzle is unsolvable.");
+//			System.out.println("The puzzle is unsolvable.");
+			isSolvable = false;
 			return;
 		}
 //		ArrayList<Gridspot> temp = optimalPath(temp1,temp2);
@@ -60,12 +63,12 @@ public class solver {
 //		{
 //			System.out.println(temp.get(i).getXIndex()+ " , "+temp.get(i).getYIndex());
 //		}
-		System.out.println("putting "+(temp2.retrieve().getL().intValue()-1)
-				+" into "+temp1.getXIndex()+" , "+temp1.getYIndex());
+//		System.out.println("putting "+(temp2.retrieve().getL().intValue()-1)
+//				+" into "+temp1.getXIndex()+" , "+temp1.getYIndex());
 		_pairs.add(new pair<Gridspot,Gridspot>(temp1,temp2));
 		_min.put(_pairs.get(_pairs.size()-1),new Integer(temp2.retrieve().getL().intValue()-1));
 		sum = sum+temp2.retrieve().getL().intValue()-1;
-		System.out.println(temp2.retrieve().getL().intValue()-1);
+//		System.out.println(temp2.retrieve().getL().intValue()-1);
 		
 //		ArrayList<Gridspot> temp = optimalPath(a.getL(),a.getR());
 		
@@ -77,15 +80,17 @@ public class solver {
 		if(sum < 0)
 		{
 			System.out.println("The puzzle is unsolvable.");
+			isSolvable = false;
+			return;
 		}
-		System.out.println("Sum is :"+sum);
+//		System.out.println("Sum is :"+sum);
 		for(int i = 0; i < _pairs.size(); i++)
 		{
-			System.out.print("The maximum Distance for "+_saved.get(i).getXIndex());
-			System.out.print(" , "+_saved.get(i).getYIndex()+" to " );
-			System.out.print(_saved.get(i+1).getXIndex()+" , "+_saved.get(i+1).getYIndex()+" is " );
+//			System.out.print("The maximum Distance for "+_saved.get(i).getXIndex());
+//			System.out.print(" , "+_saved.get(i).getYIndex()+" to " );
+//			System.out.print(_saved.get(i+1).getXIndex()+" , "+_saved.get(i+1).getYIndex()+" is " );
 			_max.put(_pairs.get(i), _min.get(_pairs.get(i)).intValue()+sum);
-			System.out.println(_min.get(_pairs.get(i)).intValue()+sum);
+//			System.out.println(_min.get(_pairs.get(i)).intValue()+sum);
 		}
 		reduceQuacks();
 		
@@ -181,7 +186,7 @@ public class solver {
 				if (flag)
 				{
 				revise.add(a.getL());
-				System.out.println("path size is "+_paths.size());
+//				System.out.println("path size is "+_paths.size());
 				_paths.add(revise); // add the paths to the path collection
 				}
 				else
@@ -208,7 +213,7 @@ public class solver {
 	{
 		Gridspot temp = goal;
 		ArrayList<Gridspot> bob = new ArrayList<Gridspot>();
-		System.out.println("From is "+from.getXIndex()+" , "+from.getYIndex());
+//		System.out.println("From is "+from.getXIndex()+" , "+from.getYIndex());
 		while(temp != from)
 		{
 			if (temp.sizeQuack() > 0)
@@ -247,24 +252,76 @@ public class solver {
 	{
 		ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> sam = 
 				new ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>>();
-		for(int i = 0; i < dem-1; i++)
-		{
-//			System.out.println(i);
-			sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-			( new pair<Integer,Integer>(new Integer(i),new Integer(0)),
-			  new pair<Integer,Integer>(new Integer(i),new Integer(dem-1))));
-		}
-//		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-//		( new pair<Integer,Integer>(new Integer(dem-2),new Integer(dem-4)),
-//		  new pair<Integer,Integer>(new Integer(dem-3),new Integer(dem-1))));
-//		
-//		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-//		( new pair<Integer,Integer>(new Integer(dem-3),new Integer(dem-3)),
-//		  new pair<Integer,Integer>(new Integer(0),new Integer(dem-2))));
-//		
-//		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
-//		( new pair<Integer,Integer>(new Integer(dem-1),new Integer(dem-3)),
-//		  new pair<Integer,Integer>(new Integer(dem-1),new Integer(dem-1))));
+//		for(int i = 0; i < dem-1; i++)
+//		{
+////			System.out.println(i);
+//			sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+//			( new pair<Integer,Integer>(new Integer(i),new Integer(0)),
+//			  new pair<Integer,Integer>(new Integer(i),new Integer(dem-1))));
+//		}
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(0),new Integer(0)),
+		  new pair<Integer,Integer>(new Integer(4),new Integer(3))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(0),new Integer(3)),
+		  new pair<Integer,Integer>(new Integer(4),new Integer(4))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(2),new Integer(2)),
+		  new pair<Integer,Integer>(new Integer(1),new Integer(3))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(4),new Integer(4)),
+		  new pair<Integer,Integer>(new Integer(2),new Integer(3))));
+		
+		return sam;
+	}
+	
+	private ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> maze2(int dem)
+	{
+		ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> sam = 
+				new ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>>();
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(0),new Integer(0)),
+		  new pair<Integer,Integer>(new Integer(2),new Integer(3))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(dem-1),new Integer(0)),
+		  new pair<Integer,Integer>(new Integer(2),new Integer(dem-1))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(0),new Integer(dem-1)),
+		  new pair<Integer,Integer>(new Integer(2),new Integer(2))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(1),new Integer(2)),
+		  new pair<Integer,Integer>(new Integer(1),new Integer(dem-1))));
+		
+		return sam;
+	}
+	
+	private ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> maze3(int dem)
+	{
+		ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> sam = 
+				new ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>>();
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(0),new Integer(4)),
+		  new pair<Integer,Integer>(new Integer(2),new Integer(3))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(1),new Integer(1)),
+		  new pair<Integer,Integer>(new Integer(1),new Integer(4))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(2),new Integer(2)),
+		  new pair<Integer,Integer>(new Integer(3),new Integer(1))));
+		
+		sam.add(new pair<pair<Integer,Integer>,pair<Integer,Integer>>
+		( new pair<Integer,Integer>(new Integer(2),new Integer(4)),
+		  new pair<Integer,Integer>(new Integer(4),new Integer(3))));
 		
 		return sam;
 	}
@@ -280,8 +337,8 @@ public class solver {
 				if(_map.containsKey(_grid[u][i]))
 				{
 					_map.put(_grid[u][i], _grid[u][i].retrieve().getL());
-					System.out.println("The minimum path distance of "+u+" , "+i+" is "+
-					_grid[u][i].retrieve().getL().intValue());
+//					System.out.println("The minimum path distance of "+u+" , "+i+" is "+
+//					_grid[u][i].retrieve().getL().intValue());
 				}
 			}
 		}
@@ -379,5 +436,5 @@ public class solver {
 		new solver();
 	}
 
-	
+	//
 }
