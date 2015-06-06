@@ -63,49 +63,99 @@ public class bruteForce {
 	   if(buck[i][x] != null) 
 		for(int u = 0; u < buck[i][x].size(); u++)
 		{
-		  if(!canGo( buck[i][x].get(u)) ) // if the current path didn't work out
+		  if(i < buck.length - 1)
 		  {
-//			Thread.sleep(100);
-		    clearPath(buck[i][x].get(u)); // Clear the path
-//		    Thread.sleep(1000);
-//		      	if(isSolvable( (i+1)%buck.length ) )	    	
-		  }
-		  else // else if the current path did work
-		  {
-			  if(isFilled())
-				  return true;
-			  
-			  _pathsPlaced[i] = buck[i][x].get(u);
-			  
-			  // Incrementing the visited count for an individual path
-			  
-			  if(_visited.get(_pathsPlaced[i]) == null)
-			    _visited.put(_pathsPlaced[i], 1);
-			  else
-				_visited.put(_pathsPlaced[i], _visited.get(_pathsPlaced[i])+1);
-			  
-			  if(_visited.get(_pathsPlaced[i]) > buck.length*2)
-			  {			
-				Thread.sleep(1000);
-				clearGrid();
-				return false;
+			  if(canGo( buck[i][x].get(u)) )
+			  {
+				  if(isSolvable(i+1))
+					  return true;
+				  clearPath(buck[i][x].get(u));
 			  }
-				
-			  
-			  if(!isSolvable((i+1)%buck.length)); // move on to the next path and try it
-				  // continue
 			  else
-				  return true;
+				  clearPath(buck[i][x].get(u));
 		  }
+//		  else if(isSolved())
+//			  return true;
+		  else
+		  {
+			  if(canGo( buck[i][x].get(u)))
+			  {
+				  if(isSolved())
+					  return true;
+			  }
+			  else
+				  clearPath(buck[i][x].get(u));
+		  }
+			  
+//		  if(!canGo( buck[i][x].get(u)) ) // if the current path didn't work out
+//		  {
+////			Thread.sleep(100);
+//		    clearPath(buck[i][x].get(u)); // Clear the path
+////		    Thread.sleep(1000);
+////		      	if(isSolvable( (i+1)%buck.length ) )	    	
+//		  }
+//		  else // else if the current path did work
+//		  {
+//			  if(i < buck.length - 1)
+//			  {
+//				  isSolvable(i+1);
+//			  }
+//			  else
+//			  {
+//				  for(int y = 0; y < buck[i].length;y++ )
+//				  {
+//					  if(buck[i][y] != null) 
+//					  for(int c = 0; c < buck[i][y].size(); c++ )
+//					  {
+//						  if(canGo( buck[i][y].get(c)) )
+//						  {
+//							  if(isSolved())
+//								  return true;
+//						  }
+//					  }
+//				  }
+//			  }
+//			  clearPath(buck[i][x].get(u));
+			  
+			  
+//			  if(isFilled())
+//				  return true;
+//			  
+//			  _pathsPlaced[i] = buck[i][x].get(u);
+//			  
+//			  // Incrementing the visited count for an individual path
+//			  
+//			  if(_visited.get(_pathsPlaced[i]) == null)
+//			    _visited.put(_pathsPlaced[i], 1);
+//			  else
+//				_visited.put(_pathsPlaced[i], _visited.get(_pathsPlaced[i])+1);
+//			  
+//			  if(_visited.get(_pathsPlaced[i]) > buck.length*2)
+//			  {			
+//				//Thread.sleep(1000);
+//				clearGrid();
+//				return false;
+//			  }
+//				
+//			  
+//			  if(!isSolvable((i+1)%buck.length)); // move on to the next path and try it
+//				  // continue
+//			  else
+//				  return true;
+//		  }
+		 
 		  
 		  
 		}
+	  if(_pathsPlaced[i] != null)
+		  clearPath(_pathsPlaced[i]);
+	  return false;
 	  
 	  // If none of the paths worked
 	    //clear the previous one
 	    //then attempt again
-	  if(isFilled())
-		  return true;
+//	  if(isFilled())
+//		  return true;
 	  
 //	  int index = (i-1)%buck.length;
 //	  for(int c = 0; c < buck.length; c++)
@@ -116,15 +166,15 @@ public class bruteForce {
 //		  }
 //	  }
 //	    clearPath(_pathsPlaced[index]);
-	  if(_visited.get(_pathsPlaced[i]) != null && _visited.get(_pathsPlaced[i]) > buck.length*2)
-	  {			
-		System.out.println("Clearing");
-		Thread.sleep(1000);
-		clearGrid();
-		return false;
-	  }
-	  
-	   	return isSolvable((i+1)%buck.length);		
+//	  if(_visited.get(_pathsPlaced[i]) != null && _visited.get(_pathsPlaced[i]) > buck.length*2)
+//	  {			
+//		System.out.println("Clearing");
+//		Thread.sleep(1000);
+//		clearGrid();
+//		return false;
+//	  }
+//	  
+//	   	return isSolvable((i+1)%buck.length);		
 	}
 	
 	private void clearGrid()
@@ -158,6 +208,64 @@ public class bruteForce {
 			}
 		}
 		return true;
+	}
+	
+	private boolean isSolved() throws InterruptedException
+	{
+		if(!isFilled())
+		  return false;
+		
+//		  _find._pairs.get(0);
+		for(int i = 0; i < _find._pairs.size(); i++)
+		{
+			Gridspot prev = _find._pairs.get(i).l ;
+			Gridspot curr = findAdj(prev,null);
+			if(curr == null)
+			{
+				return false;
+			}
+			while(curr != _find._pairs.get(i).r)
+			{
+				Gridspot temp = curr;
+				curr = findAdj(curr,prev);	
+				prev = temp;
+//				System.out.println("curr is "+curr.getXIndex()+" , "+curr.getYIndex());
+//				System.out.println("end is "+_find._pairs.get(i).r.getXIndex()+" , "+_find._pairs.get(i).r.getYIndex());
+
+				if(curr == null)
+					return false;
+			}			
+		}		
+		return true;		
+	}
+	
+	private Gridspot findAdj(Gridspot a, Gridspot from)
+	{
+		if ( getG(a.getXIndex()-1,a.getYIndex()).getColor() == a.getColor() && getG(a.getXIndex()-1,a.getYIndex()) != from )
+		{
+			return getG(a.getXIndex()-1,a.getYIndex());
+		}
+		else if ( getG(a.getXIndex()+1,a.getYIndex()).getColor() == a.getColor() && getG(a.getXIndex()+1,a.getYIndex()) != from )
+		{
+			return getG(a.getXIndex()+1,a.getYIndex());
+		}
+		else if ( getG(a.getXIndex(),a.getYIndex()-1).getColor() == a.getColor() && getG(a.getXIndex(),a.getYIndex()-1) != from )
+		{
+			return getG(a.getXIndex(),a.getYIndex()-1);
+		}
+		else if ( getG(a.getXIndex(),a.getYIndex()+1).getColor() == a.getColor() && getG(a.getXIndex(),a.getYIndex()+1) != from )
+		{
+			return getG(a.getXIndex(),a.getYIndex()+1);
+		}
+		return null;
+	}
+	private Gridspot getG(int x, int y)
+	{
+		if (x >= _find.a._grid.length || x < 0 || y >= _find.a._grid.length || y < 0)
+		{
+			return new Gridspot();
+		}
+		return _find.a._grid[x][y];
 	}
 		
 	
