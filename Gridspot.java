@@ -140,4 +140,4 @@ public class Gridspot extends Rectangle{
 		
 	}
 	
-}
+} 
