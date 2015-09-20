@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,7 +91,7 @@ public class solver {
 			_max.put(_pairs.get(i), _min.get(_pairs.get(i)).intValue()+sum);
 //			System.out.println(_min.get(_pairs.get(i)).intValue()+sum);
 		}
-		reduceQuacks();
+//		reduceQuacks();
 		
 	}
 	
@@ -121,6 +120,8 @@ public class solver {
 		}
 		}
 	}
+	
+	// Error in Store Quacks! the 0,0 only has one in the queue, when it should have MANY!
 	
 	private void solve(pair<Gridspot,Gridspot> a, int max)
 	{
