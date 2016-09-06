@@ -49,11 +49,7 @@ import java.awt.Color;
  		else
  			_map.get(cur.getL()).add(cur.getR());
  		
- //		if (!pQuack.contains(cur))
- 		
- 			return pQuack.add(cur);
- //		else
- //			return false;
+ 		return pQuack.add(cur);
  	}
  	public pairI<Integer,Gridspot> retrieve()
  	{
@@ -70,7 +66,6 @@ import java.awt.Color;
  	
  	public pairI<Integer,Gridspot> popTop()
  	{
- //		pQuack = new PriorityQueue<pairI<Integer,Gridspot>>(pQuack);
  		return pQuack.poll();
  	}
  	public void assignQuack(pair<Gridspot,Gridspot> a)
@@ -85,10 +80,8 @@ import java.awt.Color;
  	
  	public void storeQuack(pair<Gridspot,Gridspot> a)
  	{
- //		new PriorityQueue<pairI<Integer,Gridspot>>(pQuack);
  		_pQuacks.put(a, new PriorityQueue<pairI<Integer,Gridspot>>(pQuack));
  		clearQuack();
- //		pQuack = (PriorityQueue<pairI<Integer, Gridspot>>) _pQuacks.values().toArray()[0];
  	}
  	
  	

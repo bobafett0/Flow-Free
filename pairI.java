@@ -17,10 +17,4 @@ public class pairI < Integer extends Comparable<Integer>,R > implements Comparab
     {
     	return this.l.compareTo(comp.getL());
     }
-    
-//    public final Comparator<pairI<Integer, R>> KEY_COMPARATOR = new Comparator<pairI<Integer, R>>() {
-//        public int compare(pairI<Integer, R> first, pairI<Integer, R> second) {
-//            return first.getL().compareTo(second.getL());
-//        }
-//    };
 }
