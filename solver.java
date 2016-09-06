@@ -25,10 +25,10 @@ public class solver {
 	// Pop elements off the queue and save them into a new priority queue, then
 	// stop once the distances are greater than the max
 	// assign pQueue pointer to the new pQueue
-	// repeat for all Gridspots
+	// repeat for all Gridspots3
 	// Assign the quack
 	
-	public solver () throws InterruptedException
+	public solver ()
 	{
 		_screen = new teller(maze3(5), 150);
 //		_screen = new teller( maze(5),150);
@@ -49,7 +49,7 @@ public class solver {
 		Gridspot temp2 = _points.pop();_saved.push(temp2);
 		
 //		temp2.setUnOcc();
-		solve(new pairI<Integer,Gridspot>(new Integer(0),temp1),temp2);
+//		solve(new pairI<Integer,Gridspot>(new Integer(0),temp1),temp2);
 		temp2.setOcc(temp2.getColor());
 		if (!_map.containsKey(temp2))
 		{
@@ -431,7 +431,7 @@ public class solver {
 				[(y-_screen._squWidth/2)/_screen._squWidth];
 	}
 	
-	public static void main (String args[]) throws InterruptedException
+	public static void main (String args[])
 	{
 		new Frame(frameWidth ,frameHieght);
 		new solver();
