@@ -21,8 +21,6 @@ public class teller {
 			Color.green, Color.magenta, Color.orange, Color.pink,
 			Color.red, Color.yellow, Color.black,Color.gray };
 	private Stack<Gridspot> _spaces;
-//	private Set<pair<Integer,Integer>> collec;
-	//public int 
 	public teller (int squWidth) throws InterruptedException
 	{
 		game(squWidth);
@@ -105,9 +103,7 @@ public class teller {
 			{
 			temp1.setOcc(colors[_spaces.size()/2]);
 			_spaces.push(temp1);
-//			points.add(setCircle(temp1,squWidth*3/5,i/2));
 			i++;
-//			Thread.sleep(1000);
 			}
 //			An Else statement to confirm the above conditional is working 
 			else
@@ -116,7 +112,6 @@ public class teller {
 //						+temp1.getYIndex());
 			}
 		}
-//		pairList = pairUp(points);
 	}
 //	Creates the Circle,places it at the appropriate place on the grid, 
 //	sets the circle to the appropriate color, then returns the ellipse
@@ -127,8 +122,6 @@ public class teller {
 		var.setColor(colors[index]);
 		var.setSize(crClWidth, crClWidth);
 		Point p = new Point(joe.getCenterX(), joe.getCenterY()); 
-//		System.out.print(joe.getCenterX()); 
-//		System.out.println(" "+joe.getCenterY()); 
 		var.setCenter(p);
 		return var;
 	}
@@ -140,10 +133,6 @@ public class teller {
 		retur = new ArrayList<pair<Ellipse,Ellipse>>();
 		for(int i = 0; i < points.size(); i=i+2)
 		{
-//			ArrayList<pair<Gridspot,Gridspot>> retur;
-//			System.out.println("The array size is"+points.size());
-//			System.out.println("Current Indexes are : "+i+"and "+(i+1));
-//			System.out.println(points.get(i).getCenter());
 			Ellipse a = points.get(i);
 			Ellipse b = points.get(i+1);
 			pair<Ellipse,Ellipse> c = new pair<Ellipse,Ellipse>(a,b); 

@@ -25,10 +25,10 @@ public class solver {
 	// Pop elements off the queue and save them into a new priority queue, then
 	// stop once the distances are greater than the max
 	// assign pQueue pointer to the new pQueue
-	// repeat for all Gridspots
+	// repeat for all Gridspots3
 	// Assign the quack
 	
-	public solver () throws InterruptedException
+	public solver ()
 	{
 		_screen = new teller(maze3(5), 150);
 //		_screen = new teller( maze(5),150);
@@ -49,7 +49,7 @@ public class solver {
 		Gridspot temp2 = _points.pop();_saved.push(temp2);
 		
 //		temp2.setUnOcc();
-		solve(new pairI<Integer,Gridspot>(new Integer(0),temp1),temp2);
+//		solve(new pairI<Integer,Gridspot>(new Integer(0),temp1),temp2);
 		temp2.setOcc(temp2.getColor());
 		if (!_map.containsKey(temp2))
 		{
@@ -129,17 +129,6 @@ public class solver {
 		ArrayList<Gridspot> temp = optimalPath(a.getL(),a.getR());
 		assignQuacks(a);
 		_paths.add(temp);
-//		process(temp,max+1, a);
-//		for(int i = 0; i < temp.size(); i++)
-//		{s
-//			System.out.println(temp.get(i).getXIndex() +" , "+ temp.get(i).getYIndex());
-//		}
-//		while(temp.size() <= max+1 && temp.size() > 0)
-//		{
-//		_paths.add(new ArrayList<Gridspot>(temp));s
-//		temp = optimalPath(a.getL(),a.getR());
-//		process(temp,max+1, a);
-//		}
 	}
 	
 	private void process(ArrayList<Gridspot> path , int max, pair<Gridspot,Gridspot> a)
@@ -147,10 +136,7 @@ public class solver {
 		ArrayList<Gridspot> revise = new ArrayList<Gridspot>(path);
 		ArrayList<Gridspot> state ;
 		boolean flag = true;
-//		int index = 1;
 		assignQuacks(a);
-//		for(int i = 1; i < index; i++)
-//			revise.remove(revise.get(revise.size()-i)); // remove the goal from the path for now
 		Gridspot temp ;//= revise.get(revise.size()-2);
 		for(int i =0; i < path.size(); i++)
 		{
@@ -187,24 +173,12 @@ public class solver {
 				if (flag)
 				{
 				revise.add(a.getL());
-//				System.out.println("path size is "+_paths.size());
 				_paths.add(revise); // add the paths to the path collection
 				}
 				else
 					flag = true;
 				
 			}
-			
-//			else if (index+1 < revise.size())
-//			{
-//				assignQuacks(a);
-//				index++;
-//				temp = revise.get(revise.size()-index-1);
-//				revise = new ArrayList<Gridspot>(revise);
-//				for(int i = 1; i < index; i++)
-//					revise.remove(revise.get(revise.size()-i)); // remove the goal from the path for now
-//			}
-			
 		}
 		assignQuacks(a);
 		}
@@ -214,12 +188,10 @@ public class solver {
 	{
 		Gridspot temp = goal;
 		ArrayList<Gridspot> bob = new ArrayList<Gridspot>();
-//		System.out.println("From is "+from.getXIndex()+" , "+from.getYIndex());
 		while(temp != from)
 		{
 			if (temp.sizeQuack() > 0)
 			{
-//				System.out.println(temp.retrieve().getR().getXIndex()+" , "+temp.retrieve().getR().getYIndex());
 				temp = temp.popTop().getR();
 				bob.add(temp);
 			}
@@ -338,8 +310,6 @@ public class solver {
 				if(_map.containsKey(_grid[u][i]))
 				{
 					_map.put(_grid[u][i], _grid[u][i].retrieve().getL());
-//					System.out.println("The minimum path distance of "+u+" , "+i+" is "+
-//					_grid[u][i].retrieve().getL().intValue());
 				}
 			}
 		}
@@ -357,8 +327,6 @@ public class solver {
 			}
 			_map.put(vertices.get(i), new Integer(0));
 			vertices.get(i).setOcc(goal.getColor());
-//			Thread.sleep(200);
-//			System.out.println("Inserting onto "+cur.getR().getXIndex()+" , "+cur.getR().getYIndex());
 			vertices.get(i).insert(new pairI<Integer,Gridspot>(new Integer(cur.getL().intValue()+1),cur.getR()));
 			solve(new pairI<Integer,Gridspot>(new Integer(cur.getL().intValue()+1),vertices.get(i)),goal);
 			vertices.get(i).setUnOcc();
@@ -431,7 +399,7 @@ public class solver {
 				[(y-_screen._squWidth/2)/_screen._squWidth];
 	}
 	
-	public static void main (String args[]) throws InterruptedException
+	public static void main (String args[])
 	{
 		new Frame(frameWidth ,frameHieght);
 		new solver();

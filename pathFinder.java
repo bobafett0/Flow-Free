@@ -24,7 +24,7 @@ public class pathFinder {
 	{
 		try {
 			a = new solver();
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -33,11 +33,6 @@ public class pathFinder {
 			isSolve = false;
 			return;
 		}
-//		_collection = new PriorityQueue[a._grid.length][a._grid.length];
-//		for(int i = 0; i < _collection.length; i++)
-//		{
-//			_collection[i] = new PriorityQueue[a._grid.length];
-//		}
 		_pairs = a._pairs;
 		_paths = new HashSet<ArrayList<Gridspot>>();
 		PriorityQueue<pairI<Integer,Gridspot>>[][] wayPoints = new PriorityQueue[a._grid.length][a._grid.length];
@@ -50,29 +45,19 @@ public class pathFinder {
 		pathCol(wayPoints,_pairs.get(i).getL(),_pairs.get(i).getR(),new ArrayList<Gridspot>());
 		
 		}
-//		showPaths();
 	    reducePaths();
-//	    showPaths();
 	    double startTime = System.nanoTime();
 	    _hashSorted = hashSort();
 	    double endTime = System.nanoTime();
 	    System.out.println(endTime - startTime);
 	    
-//	    startTime = System.nanoTime();
 	    sorted = sortPaths();
-//	    endTime = System.nanoTime();
-//	    System.out.println(endTime - startTime);
-	    //showSorted();
 	    _colors = ((ArrayList<ArrayList<Gridspot>>[][])new ArrayList[_pairs.size()][]); 
 		System.out.println(_hashSorted.length);
 		for(int i = 0; i < _pairs.size(); i++)
 		  _colors[i] = (ArrayList<ArrayList<Gridspot>>[])new ArrayList[_hashSorted.length]; 
 		    
-	    organizeHash();
-
-	    //showOrgan(_colors);
-	    
-	    
+	    organizeHash();	    
 	}
 	
 	private void showOrgan(ArrayList<ArrayList<Gridspot>>[][] a) throws InterruptedException
@@ -101,7 +86,6 @@ public class pathFinder {
 	    if( _hashSorted[i] != null)
 		  for(int x = 0; x < _hashSorted[i].size();x++)
 		  {
-//		    System.out.println("Indy!!"+matchColor(_hashSorted[i].get(x).get(0).getColor()));
 		    if (_colors[matchColor(_hashSorted[i].get(x).get(0).getColor())][i] == null)
 		      _colors[matchColor(_hashSorted[i].get(x).get(0).getColor())][i] = new ArrayList<ArrayList<Gridspot>>();
 		    	  
@@ -130,15 +114,12 @@ public class pathFinder {
 				{
 					hashSorted[i].get(x).get(u).setOcc(hashSorted[i].get(x).get(0).getColor());
 					Thread.sleep(200);
-//					System.out.println("On index "+u);
 				}
-//				System.out.println("the size is "+hashSorted[i].get(x).size());
 				for(int u = hashSorted[i].get(x).size()-2; u > 0; u--)
 				{
 					hashSorted[i].get(x).get(u).setUnOcc();
 					Thread.sleep(200);
 				}
-//				System.out.println("The bucket size is "+hashSorted[i].size());
 			}
 	}
 	
@@ -152,15 +133,12 @@ public class pathFinder {
 				{
 					hashSorted[i].get(x).get(u).setOcc(hashSorted[i].get(x).get(0).getColor());
 					Thread.sleep(200);
-//					System.out.println("On index "+u);
 				}
-//				System.out.println("the size is "+hashSorted[i].get(x).size());
 				for(int u = hashSorted[i].get(x).size()-2; u > 0; u--)
 				{
 					hashSorted[i].get(x).get(u).setUnOcc();
 					Thread.sleep(200);
 				}
-//				System.out.println("The bucket size is "+hashSorted[i].size());
 			}
 	}
 	
@@ -212,7 +190,6 @@ public class pathFinder {
 			if (hash[sorted[i].size()-min] == null)
 			{
 				hash[sorted[i].size()-min] = new ArrayList<ArrayList<Gridspot>>();
-//				hash[sorted[i].size()-min].get(index);
 			}
 			hash[sorted[i].size()-min].add(sorted[i]); 
 		}
@@ -264,7 +241,6 @@ public class pathFinder {
 		HashSet<ArrayList<Gridspot>> reduced = new HashSet<ArrayList<Gridspot>>();
 		Iterator<ArrayList<Gridspot>> it = _paths.iterator();
 	    while (it.hasNext()) {
-//	    	System.out.println("dfsf");
 	    	ArrayList<Gridspot> temp = it.next();
 	    	int max = obtainMax(temp.get(temp.size()-1),temp.get(0));
 	    	if( temp.size() <= max*max)
@@ -302,7 +278,6 @@ public class pathFinder {
 		{
 			for(int u = 0; u < wayPoints.length; u++)
 			{
-//				System.out.println(i);
 				wayPoints[i][u] = new PriorityQueue(a._grid[i][u].pQuack);
 				a._grid[i][u].clearQuack();
 			}
@@ -351,32 +326,14 @@ public class pathFinder {
 	
 	private ArrayList<Gridspot> optimalPath(Gridspot from, Gridspot goal, PriorityQueue<pairI<Integer,Gridspot>>[][] wayPoints )
 	{
-//		Gridspot temp = goal;
 		ArrayList<Gridspot> bob = new ArrayList<Gridspot>();
-//		while(temp != from)
-//		{
-//			if (wayPoints[temp.getXIndex()][temp.getYIndex()].size() > 0)
-//			{
-//				if(check(temp, wayPoints[temp.getXIndex()][temp.getYIndex()].peek().r))
-//				{
-//				// never reaches this statement. LOL.
-//				temp = wayPoints[temp.getXIndex()][temp.getYIndex()].peek().r;
-//				bob.add(temp);
-//				}
-//				else 
-//					return null;
-//			}
-//			else 
-//				break;
-//		}
 		if(goal == from)
 		{
 			bob.add(from);
 			return bob;
 		}
 		else
-			return null;
-		
+			return null;		
 	}
 	
 	private boolean check(Gridspot from, Gridspot to)
