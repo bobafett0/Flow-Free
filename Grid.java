@@ -12,7 +12,7 @@ import wheelsunh.users.Ellipse;
 import wheelsunh.users.Frame;
 import wheelsunh.users.Rectangle;
 
-public class teller {
+public class Grid {
 	public static int frameWidth = 800, frameHieght = 800;
 	private Gridspot[][] bob;
 	public int cIrcleH, _squWidth;
@@ -21,13 +21,13 @@ public class teller {
 			Color.green, Color.magenta, Color.orange, Color.pink,
 			Color.red, Color.yellow, Color.black,Color.gray };
 	private Stack<Gridspot> _spaces;
-	public teller (int squWidth) throws InterruptedException
+	public Grid (int squWidth) throws InterruptedException
 	{
 		game(squWidth);
 		makeMaze(squWidth);
 		
 	}
-	public teller(ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> list, int squWidth )
+	public Grid(ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> list, int squWidth )
 	{
 		game(squWidth);
 		for(int i = 0; i < list.size(); i++)
@@ -161,7 +161,7 @@ public class teller {
 	public static void main (String args[]) throws InterruptedException
 	{
 		new Frame(frameWidth,frameHieght);
-		new teller(200);
+		new Grid(200);
 	}
 
 }
