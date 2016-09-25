@@ -7,94 +7,114 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
-
-import wheelsunh.users.Ellipse;
 import wheelsunh.users.Frame;
-import wheelsunh.users.Rectangle;
 
 public class Grid {
 	public static int frameWidth = 800, frameHieght = 800;
-	private Gridspot[][] bob;
+	private Gridspot[][] Grid;
 	public int cIrcleH, _squWidth;
 	public ArrayList<pair<Gridspot,Gridspot>> pairList;
 	public Color[] colors = { Color.blue, Color.cyan, Color.DARK_GRAY, 
 			Color.green, Color.magenta, Color.orange, Color.pink,
 			Color.red, Color.yellow, Color.black,Color.gray };
 	private Stack<Gridspot> _spaces;
-	public Grid (int squWidth) throws InterruptedException
+	
+	public Grid ()
 	{
-		game(squWidth);
-		makeMaze(squWidth);
 		
 	}
-	public Grid(ArrayList<pair<pair<Integer,Integer>,pair<Integer,Integer>>> list, int squWidth )
+//	public Grid(ArrayList<StartingPair> startingPairs )
+//	{
+//		game(squWidth);
+//		for(int i = 0; i < list.size(); i++)
+//		{
+//			System.out.println(i);
+//			System.out.println(list.get(i).getL().getL().intValue());
+//			System.out.println(list.get(i).getL().getR().intValue());
+//		Gridspot temp1 = bob[list.get(i).getL().getL().intValue()]
+//				[list.get(i).getL().getR().intValue()];
+//		Gridspot temp2 = bob[list.get(i).getR().getL().intValue()]
+//				[list.get(i).getR().getR().intValue()];
+//		temp1.setOcc(colors[_spaces.size()/2]);
+//		temp2.setOcc(colors[_spaces.size()/2]);
+//		_spaces.push(temp1);_spaces.push(temp2);
+//		}
+//		
+//	}
+	
+	public void initialize(int squWidth)
 	{
-		game(squWidth);
-		for(int i = 0; i < list.size(); i++)
-		{
-			System.out.println(i);
-			System.out.println(list.get(i).getL().getL().intValue());
-			System.out.println(list.get(i).getL().getR().intValue());
-		Gridspot temp1 = bob[list.get(i).getL().getL().intValue()]
-				[list.get(i).getL().getR().intValue()];
-		Gridspot temp2 = bob[list.get(i).getR().getL().intValue()]
-				[list.get(i).getR().getR().intValue()];
-		temp1.setOcc(colors[_spaces.size()/2]);
-		temp2.setOcc(colors[_spaces.size()/2]);
-		_spaces.push(temp1);_spaces.push(temp2);
-		}
+		Gridspot[][] grid = getGrid(squWidth);
+		ArrayList<StartingPair> startingPairs = generateRandomStartingPairs(grid,squWidth,squWidth);
+		
 		
 	}
 	
-	private void game(int squWidth)
+	public void initialize(ArrayList<StartingPair> startingPairs, int squWidth)
 	{
-		_squWidth = squWidth;
-		if (squWidth > 400)
-		{
-			System.out.println("Square Width argument too small. It "
-					+ "Must be equal to or less than 400");
-			return;
-		}
-		cIrcleH = 3*squWidth/5;
-		makeGrd(squWidth);
-		_spaces = new Stack<Gridspot>();
+		Gridspot[][] grid = getGrid(squWidth);
+		
+		
 	}
+	
 //	Creates the two dimentional array of "gridspots," in other words, 
 //	the rectangles that fill up the grid.
-	private void makeGrd (int squWidth)
-	{
-		bob = new Gridspot[(frameWidth/squWidth)][(frameWidth/squWidth)];
-		System.out.println(bob.length);
-		System.out.println(bob[1].length);
+	private Gridspot[][] getGrid (int gridWidth)
+	{		
+		Gridspot[][] grid = new Gridspot[gridWidth][gridWidth];
 
-		for(int u = 0; u < (frameHieght)/squWidth; u++)
+		for(int u = 0; u < gridWidth; u++)
 		{
-			for(int i = 0; i < (frameWidth)/squWidth; i++)
+			for(int i = 0; i < gridWidth; i++)
 			{
-				Gridspot tom = new Gridspot(i*squWidth,u*squWidth,squWidth/2);
-				tom.setIndex(i,u);
-				bob[i][u] = tom;
-				bob[i][u].setSize(squWidth,squWidth);
-				bob[i][u].setFillColor(Color.white);
-				bob[i][u].setFrameColor(Color.black);
+				Gridspot gridspot = new Gridspot();
+				Grid[u][i] = gridspot;
 			}
-		}	
+		}
+		return grid;
+	}
+	
+	private ArrayList<StartingPair> generateRandomStartingPairs( Gridspot[][] grid, int numStartingPairs , int squWidth )
+	{
+		ArrayList<StartingPair> startingPairs = new ArrayList<StartingPair>();
+		Random rand = new Random();
+		Gridspot headSpot, tailSpot;
+		int xIndexHeadSpot, yIndexHeadSpot, xIndexTailSpot, yIndexTailSpot;
+		for(int i = 0; i < numStartingPairs; i++) {
+			xIndexHeadSpot = rand.nextInt(squWidth);
+			yIndexHeadSpot = rand.nextInt(squWidth);			
+			headSpot = grid[xIndexHeadSpot][yIndexHeadSpot];
+			
+			xIndexTailSpot =  rand.nextInt(squWidth);
+			yIndexTailSpot = rand.nextInt(squWidth);
+			tailSpot = grid[xIndexTailSpot][yIndexTailSpot];
+			
+			if(headSpot != tailSpot){
+				startingPairs.add(new StartingPair(headSpot,tailSpot));
+			}
+			else{
+				i--;
+			}
+		}
+		return startingPairs;		
 	}
 //	Loops through grid points and makes sure they are not already occupied
 //	calls the setCirle method through each iteration
-	private void makeMaze(int squWidth) throws InterruptedException
+	private void placeStartingPairs(Gridspot[][] grid, int numStartingPairs) throws InterruptedException
 	{
-//		ArrayList<Ellipse> points = new ArrayList<Ellipse>();
+		Random indexGenerator = new Random();
 		
-		Random rope = new Random();
+		for(int i = 0; i < numStartingPairs; i++)
+		{
+			Gridspot head = grid[][];
+		}		
+		
 		int cap = bob.length*2;
-//		makes the number of balls larger by one if it is an odd number
 		if (cap % 2 != 0)
 			cap++;
 		
 		for(int i = 0; i < cap-2;)
 		{
-//			Obtaining gridspots of which to place circles
 			Gridspot temp1 = bob[Math.abs(rope.nextInt()%bob.length)]
 					[Math.abs(rope.nextInt()%bob.length)];
 			
@@ -112,34 +132,6 @@ public class Grid {
 //						+temp1.getYIndex());
 			}
 		}
-	}
-//	Creates the Circle,places it at the appropriate place on the grid, 
-//	sets the circle to the appropriate color, then returns the ellipse
-	
-	private Ellipse setCircle(Gridspot joe,int crClWidth,int index) 
-	{
-		Ellipse var = new Ellipse();
-		var.setColor(colors[index]);
-		var.setSize(crClWidth, crClWidth);
-		Point p = new Point(joe.getCenterX(), joe.getCenterY()); 
-		var.setCenter(p);
-		return var;
-	}
-	
-	private ArrayList<pair<Ellipse,Ellipse>> retur;
-	
-	private ArrayList<pair<Ellipse,Ellipse>> pairUp( ArrayList<Ellipse> points)
-	{
-		retur = new ArrayList<pair<Ellipse,Ellipse>>();
-		for(int i = 0; i < points.size(); i=i+2)
-		{
-			Ellipse a = points.get(i);
-			Ellipse b = points.get(i+1);
-			pair<Ellipse,Ellipse> c = new pair<Ellipse,Ellipse>(a,b); 
-			retur.add(c);
-		}
-		
-		return retur;
 	}
 	
 //	Takes in two gridspots as arguments, and then calculates the number of units they
@@ -161,7 +153,7 @@ public class Grid {
 	public static void main (String args[]) throws InterruptedException
 	{
 		new Frame(frameWidth,frameHieght);
-		new Grid(200);
+		new Grid(4);
 	}
 
 }

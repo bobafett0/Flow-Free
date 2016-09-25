@@ -1,9 +1,8 @@
 
 public static class GridUtilities {
 	
-	private boolean isFilled()
+	private boolean isFilled(Grid grid)
 	{
-		Gridspot[][] grid = _find.a._screen.getGrid();
 		for(int i = 0; i < grid.length; i++ )
 		{
 			for(int u = 0; u < grid[i].length; u++)

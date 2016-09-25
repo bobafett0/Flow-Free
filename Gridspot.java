@@ -2,38 +2,24 @@ import java.awt.Color;
  import java.util.ArrayList;
  import java.util.HashMap;
  import java.util.PriorityQueue;
- 
- import wheelsunh.users.Ellipse;
- import wheelsunh.users.Rectangle;
- 
- public class Gridspot extends Rectangle{
+  
+ public class Gridspot {
  	public boolean occupied = false;
  	private int _Xindex, _Yindex;
- 	private Rectangle reddy;
  	private int _recSize;
  	public PriorityQueue<pairI<Integer,Gridspot>> pQuack;
- 	public HashMap<Integer,ArrayList<Gridspot>> _map;
+ 	public HashMap<Integer,Path> _map;
  	public HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,Gridspot>>> _pQuacks;
  	public HashMap<Integer,ArrayList<pair<Integer,Integer>>> tuene;
  	public HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,pair<Integer,Integer>>>> _tuenes;
  
  	// Constructor with location arguments
- 	public Gridspot(int x , int y, int size)
- 	{
- 		super(x,y);
- 		_recSize = size;
- 		pQuack = new PriorityQueue<pairI<Integer,Gridspot>>();
- 		_pQuacks = new HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,Gridspot>>>();
- 		_map = new HashMap<Integer,ArrayList<Gridspot>>();
- 		
- 	}
  	public Gridspot()
  	{
- 		super();
- 		super.hide();
- 		occupied = true;
+ 		pQuack = new PriorityQueue<pairI<Integer,Gridspot>>();
+ 		_pQuacks = new HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,Gridspot>>>();
+ 		_map = new HashMap<Integer,Path>(); 		
  	}
- 	
  	/*
  	 * pQuack methods
  	 */
@@ -43,7 +29,7 @@ import java.awt.Color;
  	{
  		if (_map.get(cur.getL()) == null)
  		{
- 			_map.put(cur.getL(), new ArrayList<Gridspot>());
+ 			_map.put(cur.getL(), new Path());
  			_map.get(cur.getL()).add(cur.getR());
  		}
  		else

@@ -3,19 +3,17 @@ import java.util.HashMap;
 
 import wheelsunh.users.Frame;
 
-
-
-public class bruteForce {
+public class PathCycler {
 	private static int frameWidth = 800, frameHieght = 800;
 	public pathFinder _find;
 	public ArrayList<ArrayList<Gridspot>>[] _buckets;
 	public int[] _indexes;
-	public ArrayList<ArrayList<Gridspot>>[][] buck;
+	public ArrayList<Path>[][] buck;
 	public ArrayList<Gridspot>[] _pathsPlaced;
-	public HashMap <ArrayList<Gridspot>,Integer> _visited; 
+	public HashMap <Path,Integer> _visited; 
 	// keeps track of the number of times a path has been considered 
 
-	public bruteForce() throws InterruptedException
+	public PathCycler() throws InterruptedException
 	{
 		
 		_find = new pathFinder();	
@@ -30,7 +28,7 @@ public class bruteForce {
 		}
 		_pathsPlaced = new ArrayList[buck.length];
 		
-		_visited = new HashMap <ArrayList<Gridspot>,Integer>();
+		_visited = new HashMap <Path,Integer>();
 				
 		System.out.println(isSolvable(0));
 	}
@@ -222,7 +220,7 @@ public class bruteForce {
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 		new Frame(frameWidth ,frameHieght);
-		new bruteForce();
+		new PathCycler();
 	}
 
 }

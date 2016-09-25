@@ -131,59 +131,6 @@ public class solver {
 		_paths.add(temp);
 	}
 	
-	private void process(ArrayList<Gridspot> path , int max, pair<Gridspot,Gridspot> a)
-	{
-		ArrayList<Gridspot> revise = new ArrayList<Gridspot>(path);
-		ArrayList<Gridspot> state ;
-		boolean flag = true;
-		assignQuacks(a);
-		Gridspot temp ;//= revise.get(revise.size()-2);
-		for(int i =0; i < path.size(); i++)
-		{
-		temp = revise.get(revise.size()-2-i);
-		int size = revise.size();
-		
-		for(int u = 0; u < i+1; u++)
-		revise.remove(revise.get(size-u-1));
-		
-		state = new ArrayList<Gridspot>(revise);
-		temp.pQuack.toArray();
-		while(temp.sizeQuack() > 0) // Temp is the second to last Gridspot in the path
-		{
-			revise = new ArrayList<Gridspot>(state);
-			pairI<Integer,Gridspot> pair = temp.popTop(); // The pair is the first waypoint on temp
-			if(revise.size()+pair.getL() <= max*3) // if the projected size is less than or equal to max, continue
-			{
-				while(pair.getR() != a.getL()) // while Spot on the waypoint is not the goal, continue
-				{
-					if(!revise.contains(pair.getR()))
-					{
-					revise.add(pair.getR());
-					pair = pair.getR().popTop(); // move on to the next waypoint
-					 // add each element in the path to the list 
-					if (pair == null)
-						break;
-					}
-					else
-					{
-						flag = false;
-						break;
-					}
-				}
-				if (flag)
-				{
-				revise.add(a.getL());
-				_paths.add(revise); // add the paths to the path collection
-				}
-				else
-					flag = true;
-				
-			}
-		}
-		assignQuacks(a);
-		}
-	}
-	
 	private ArrayList<Gridspot> optimalPath(Gridspot from, Gridspot goal)
 	{
 		Gridspot temp = goal;

@@ -294,7 +294,8 @@ public class pathFinder {
 			}
 		return temp;		
 	}
-
+// Main logic of class
+	
 	public void pathCol(PriorityQueue<pairI<Integer,Gridspot>>[][] wayPoints , Gridspot from , Gridspot goal, ArrayList<Gridspot> prevs)
 	{
 		HashSet<Gridspot> aBop = new HashSet<Gridspot>();
@@ -335,6 +336,8 @@ public class pathFinder {
 		else
 			return null;		
 	}
+	
+	// End of main class logic
 	
 	private boolean check(Gridspot from, Gridspot to)
 	{
