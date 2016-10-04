@@ -14,8 +14,10 @@ import java.awt.Color;
  	public HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,pair<Integer,Integer>>>> _tuenes;
  
  	// Constructor with location arguments
- 	public Gridspot()
+ 	public Gridspot(int xIndex,int yIndex)
  	{
+		 _Xindex = xIndex;
+		 _Yindex = yIndex;
  		pQuack = new PriorityQueue<pairI<Integer,Gridspot>>();
  		_pQuacks = new HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,Gridspot>>>();
  		_map = new HashMap<Integer,Path>(); 		
@@ -37,13 +39,13 @@ import java.awt.Color;
  		
  		return pQuack.add(cur);
  	}
- 	public pairI<Integer,Gridspot> retrieve()
- 	{
- 		if(pQuack.size() > 0)
- 			return pQuack.peek();
- 		else
- 			return new pairI<Integer,Gridspot>(new Integer(4),new Gridspot());
- 	}
+// 	public pairI<Integer,Gridspot> retrieve()
+// 	{
+// 		if(pQuack.size() > 0)
+// 			return pQuack.peek();
+// 		else
+// 			return new pairI<Integer,Gridspot>(new Integer(4),new Gridspot());
+// 	}
  	
  	public int sizeQuack()
  	{
@@ -73,29 +75,8 @@ import java.awt.Color;
  	
  	/*
  	 * reddy methods
- 	 */
- 	
- 	public void setOcc (Color color)
- 	{
- 		occupied = true;
- 		reddy.show();
- 		reddy.setColor(color);
- 	}
- 	public void setUnOcc ()
- 	{
- 		reddy.hide();
- 		occupied = false;
- 	}
- 	
- 	public void setInColor(Color color)
- 	{
- 		reddy.setColor(color);
- 	}
- 	public Color getColor()
- 	{
- 		return reddy.getColor();
- 	}
- 	
+ 	 */ 	
+ 	 	
  	public void setIndex(int x, int y)
  	{
  		_Xindex = x; _Yindex = y;
@@ -108,14 +89,5 @@ import java.awt.Color;
  	{
  		return _Yindex;
  	}
- 	public void setSize(int x, int y)
- 	{
- 		super.setSize(x,y);
- 		reddy = new Rectangle();
- 		reddy.setSize(_recSize,_recSize);
- 		reddy.setCenter(super.getCenter());
- 		reddy.hide();
- 		
- 	}
- 	
+
  }

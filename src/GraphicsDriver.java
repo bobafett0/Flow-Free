@@ -3,6 +3,6 @@ import wheelsunh.users.Frame;
 import wheelsunh.users.Rectangle;
 
 
-public static class GraphicsDriver {
+public class GraphicsDriver {
 		
 }

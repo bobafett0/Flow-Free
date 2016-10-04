@@ -11,7 +11,7 @@ import wheelsunh.users.Frame;
 
 public class Grid {
 	public static int frameWidth = 800, frameHieght = 800;
-	private Gridspot[][] Grid;
+	public Gridspot[][] GridSpotArray;
 	public int cIrcleH, _squWidth;
 	public ArrayList<pair<Gridspot,Gridspot>> pairList;
 	public Color[] colors = { Color.blue, Color.cyan, Color.DARK_GRAY, 
@@ -21,7 +21,7 @@ public class Grid {
 	
 	public Grid ()
 	{
-		
+//		GridSpotArray = new Gridspot[][];
 	}
 //	public Grid(ArrayList<StartingPair> startingPairs )
 //	{
@@ -45,7 +45,7 @@ public class Grid {
 	public void initialize(int squWidth)
 	{
 		Gridspot[][] grid = getGrid(squWidth);
-		ArrayList<StartingPair> startingPairs = generateRandomStartingPairs(grid,squWidth,squWidth);
+		ArrayList<StartingPair> startingPairs = generateRandomStartingPairs(grid,squWidth);
 		
 		
 	}
@@ -59,7 +59,7 @@ public class Grid {
 	
 //	Creates the two dimentional array of "gridspots," in other words, 
 //	the rectangles that fill up the grid.
-	private Gridspot[][] getGrid (int gridWidth)
+	public Gridspot[][] getGrid (int gridWidth)
 	{		
 		Gridspot[][] grid = new Gridspot[gridWidth][gridWidth];
 
@@ -67,15 +67,16 @@ public class Grid {
 		{
 			for(int i = 0; i < gridWidth; i++)
 			{
-				Gridspot gridspot = new Gridspot();
-				Grid[u][i] = gridspot;
+				Gridspot gridspot = new Gridspot(u,i);
+				grid[u][i] = gridspot;
 			}
 		}
 		return grid;
 	}
 	
-	private ArrayList<StartingPair> generateRandomStartingPairs( Gridspot[][] grid, int numStartingPairs , int squWidth )
+	public ArrayList<StartingPair> generateRandomStartingPairs( Gridspot[][] grid, int numStartingPairs )
 	{
+		int squWidth = grid.length;
 		ArrayList<StartingPair> startingPairs = new ArrayList<StartingPair>();
 		Random rand = new Random();
 		Gridspot headSpot, tailSpot;
@@ -100,40 +101,40 @@ public class Grid {
 	}
 //	Loops through grid points and makes sure they are not already occupied
 //	calls the setCirle method through each iteration
-	private void placeStartingPairs(Gridspot[][] grid, int numStartingPairs) throws InterruptedException
-	{
-		Random indexGenerator = new Random();
-		
-		for(int i = 0; i < numStartingPairs; i++)
-		{
-			Gridspot head = grid[][];
-		}		
-		
-		int cap = bob.length*2;
-		if (cap % 2 != 0)
-			cap++;
-		
-		for(int i = 0; i < cap-2;)
-		{
-			Gridspot temp1 = bob[Math.abs(rope.nextInt()%bob.length)]
-					[Math.abs(rope.nextInt()%bob.length)];
-			
-			if (!temp1.occupied && (_spaces.isEmpty() || 
-					( _spaces.size() % 2 == 0 ) || (calSquDis(temp1,_spaces.peek())) > 1 ))
-			{
-			temp1.setOcc(colors[_spaces.size()/2]);
-			_spaces.push(temp1);
-			i++;
-			}
-//			An Else statement to confirm the above conditional is working 
-			else
-			{
-//				System.out.println("Was going to do "+temp1.getXIndex()+" "
-//						+temp1.getYIndex());
-			}
-		}
-	}
-	
+//	private void placeStartingPairs(Gridspot[][] grid, int numStartingPairs) throws InterruptedException
+//	{
+//		Random indexGenerator = new Random();
+//		
+//		for(int i = 0; i < numStartingPairs; i++)
+//		{
+//			Gridspot head = grid[][];
+//		}
+//		
+//		int cap = bob.length*2;
+//		if (cap % 2 != 0)
+//			cap++;
+//		
+//		for(int i = 0; i < cap-2;)
+//		{
+//			Gridspot temp1 = bob[Math.abs(rope.nextInt()%bob.length)]
+//					[Math.abs(rope.nextInt()%bob.length)];
+//			
+//			if (!temp1.occupied && (_spaces.isEmpty() || 
+//					( _spaces.size() % 2 == 0 ) || (calSquDis(temp1,_spaces.peek())) > 1 ))
+//			{
+//			temp1.setOcc(colors[_spaces.size()/2]);
+//			_spaces.push(temp1);
+//			i++;
+//			}
+////			An Else statement to confirm the above conditional is working 
+//			else
+//			{
+////				System.out.println("Was going to do "+temp1.getXIndex()+" "
+////						+temp1.getYIndex());
+//			}
+//		}
+//	}
+//	
 //	Takes in two gridspots as arguments, and then calculates the number of units they
 //	are apart from each other, having a gridspot count as one unit.
 	public int calSquDis(Gridspot x, Gridspot y)
@@ -143,7 +144,7 @@ public class Grid {
 	
 	public Gridspot[][] getGrid()
 	{
-		return bob;
+		return GridSpotArray;
 	}
 
 	public Stack<Gridspot> getpairL() {
@@ -153,7 +154,7 @@ public class Grid {
 	public static void main (String args[]) throws InterruptedException
 	{
 		new Frame(frameWidth,frameHieght);
-		new Grid(4);
+//		new Grid(4);
 	}
 
 }
