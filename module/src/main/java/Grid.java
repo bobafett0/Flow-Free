@@ -12,6 +12,7 @@ import wheelsunh.users.Frame;
 public class Grid {
 	public static int frameWidth = 800, frameHieght = 800;
 	public Gridspot[][] GridSpotArray;
+	public StartingPair startingPairs;
 	public int cIrcleH, _squWidth;
 	public ArrayList<pair<Gridspot,Gridspot>> pairList;
 	public Color[] colors = { Color.blue, Color.cyan, Color.DARK_GRAY, 
@@ -23,38 +24,16 @@ public class Grid {
 	{
 //		GridSpotArray = new Gridspot[][];
 	}
-//	public Grid(ArrayList<StartingPair> startingPairs )
-//	{
-//		game(squWidth);
-//		for(int i = 0; i < list.size(); i++)
-//		{
-//			System.out.println(i);
-//			System.out.println(list.get(i).getL().getL().intValue());
-//			System.out.println(list.get(i).getL().getR().intValue());
-//		Gridspot temp1 = bob[list.get(i).getL().getL().intValue()]
-//				[list.get(i).getL().getR().intValue()];
-//		Gridspot temp2 = bob[list.get(i).getR().getL().intValue()]
-//				[list.get(i).getR().getR().intValue()];
-//		temp1.setOcc(colors[_spaces.size()/2]);
-//		temp2.setOcc(colors[_spaces.size()/2]);
-//		_spaces.push(temp1);_spaces.push(temp2);
-//		}
-//		
-//	}
 	
 	public void initialize(int squWidth)
 	{
 		Gridspot[][] grid = getGrid(squWidth);
-		ArrayList<StartingPair> startingPairs = generateRandomStartingPairs(grid,squWidth);
-		
-		
+		startingPairs = generateRandomStartingPairs(grid,squWidth);
 	}
 	
 	public void initialize(ArrayList<StartingPair> startingPairs, int squWidth)
 	{
 		Gridspot[][] grid = getGrid(squWidth);
-		
-		
 	}
 	
 //	Creates the two dimentional array of "gridspots," in other words, 
@@ -77,7 +56,7 @@ public class Grid {
 	private ArrayList<StartingPair> generateRandomStartingPairs( Gridspot[][] grid, int numStartingPairs )
 	{
 		int squWidth = grid.length;
-		ArrayList<StartingPair> startingPairs = new ArrayList<StartingPair>();
+		ArrayList<StartingPair> startingPairsLocal = new ArrayList<StartingPair>();
 		Random rand = new Random();
 		Gridspot headSpot, tailSpot;
 		int xIndexHeadSpot, yIndexHeadSpot, xIndexTailSpot, yIndexTailSpot;
@@ -91,13 +70,13 @@ public class Grid {
 			tailSpot = grid[xIndexTailSpot][yIndexTailSpot];
 			
 			if(headSpot != tailSpot){
-				startingPairs.add(new StartingPair(headSpot,tailSpot));
+				startingPairsLocal.add(new StartingPair(headSpot,tailSpot));
 			}
 			else{
 				i--;
 			}
 		}
-		return startingPairs;		
+		return startingPairsLocal;		
 	}
 //	Loops through grid points and makes sure they are not already occupied
 //	calls the setCirle method through each iteration

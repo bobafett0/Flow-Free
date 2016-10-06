@@ -18,9 +18,7 @@ public class GridTestTest {
 		int squWidth = 4+rand.nextInt(6);
 		
 		grid.initialize(squWidth);
-		Gridspot[][] gridArray = grid.getGrid(squWidth);
-		ArrayList<StartingPair> startingPairs = grid.generateRandomStartingPairs(gridArray,squWidth);
-		
+				
 		for(int i = 0; i < startingPairs.size(); i++){			
 			if(startingPairs.get(i).getL().equals(startingPairs.get(i).getR())) {
 				throw new Exception();
