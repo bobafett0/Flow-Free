@@ -59,7 +59,7 @@ public class Grid {
 	
 //	Creates the two dimentional array of "gridspots," in other words, 
 //	the rectangles that fill up the grid.
-	public Gridspot[][] getGrid (int gridWidth)
+	private Gridspot[][] getGrid (int gridWidth)
 	{		
 		Gridspot[][] grid = new Gridspot[gridWidth][gridWidth];
 
@@ -74,7 +74,7 @@ public class Grid {
 		return grid;
 	}
 	
-	public ArrayList<StartingPair> generateRandomStartingPairs( Gridspot[][] grid, int numStartingPairs )
+	private ArrayList<StartingPair> generateRandomStartingPairs( Gridspot[][] grid, int numStartingPairs )
 	{
 		int squWidth = grid.length;
 		ArrayList<StartingPair> startingPairs = new ArrayList<StartingPair>();
