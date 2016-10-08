@@ -13,6 +13,7 @@ public class GridTestTest {
 	@Test
 	public void headAndTailStartingPointsAreNotSame() throws Exception {
 		System.out.println("Running Test");
+		
 		Grid grid = new Grid(); 
 		Random rand = new Random();
 		int squWidth = 4+rand.nextInt(6);
