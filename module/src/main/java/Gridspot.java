@@ -1,25 +1,26 @@
+package module.src.main.java;
 import java.awt.Color;
  import java.util.ArrayList;
  import java.util.HashMap;
  import java.util.PriorityQueue;
   
- public class Gridspot {
+ public class GridSpot {
  	public boolean occupied = false;
  	private int _Xindex, _Yindex;
  	private int _recSize;
- 	public PriorityQueue<pairI<Integer,Gridspot>> pQuack;
+ 	public PriorityQueue<pairI<Integer,GridSpot>> pQuack;
  	public HashMap<Integer,Path> _map;
- 	public HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,Gridspot>>> _pQuacks;
+ 	public HashMap<pair<GridSpot,GridSpot>,PriorityQueue<pairI<Integer,GridSpot>>> _pQuacks;
  	public HashMap<Integer,ArrayList<pair<Integer,Integer>>> tuene;
- 	public HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,pair<Integer,Integer>>>> _tuenes;
+ 	public HashMap<pair<GridSpot,GridSpot>,PriorityQueue<pairI<Integer,pair<Integer,Integer>>>> _tuenes;
  
  	// Constructor with location arguments
- 	public Gridspot(int xIndex,int yIndex)
+ 	public GridSpot(int xIndex,int yIndex)
  	{
 		 _Xindex = xIndex;
 		 _Yindex = yIndex;
- 		pQuack = new PriorityQueue<pairI<Integer,Gridspot>>();
- 		_pQuacks = new HashMap<pair<Gridspot,Gridspot>,PriorityQueue<pairI<Integer,Gridspot>>>();
+ 		pQuack = new PriorityQueue<pairI<Integer,GridSpot>>();
+ 		_pQuacks = new HashMap<pair<GridSpot,GridSpot>,PriorityQueue<pairI<Integer,GridSpot>>>();
  		_map = new HashMap<Integer,Path>(); 		
  	}
  	/*
@@ -27,7 +28,7 @@ import java.awt.Color;
  	 */
  	
  	// Adds elements to the priority queue
- 	public boolean insert(pairI<Integer,Gridspot> cur)
+ 	public boolean insert(pairI<Integer,GridSpot> cur)
  	{
  		if (_map.get(cur.getL()) == null)
  		{
@@ -39,12 +40,12 @@ import java.awt.Color;
  		
  		return pQuack.add(cur);
  	}
-// 	public pairI<Integer,Gridspot> retrieve()
+// 	public pairI<Integer,GridSpot> retrieve()
 // 	{
 // 		if(pQuack.size() > 0)
 // 			return pQuack.peek();
 // 		else
-// 			return new pairI<Integer,Gridspot>(new Integer(4),new Gridspot());
+// 			return new pairI<Integer,GridSpot>(new Integer(4),new GridSpot());
 // 	}
  	
  	public int sizeQuack()
@@ -52,13 +53,13 @@ import java.awt.Color;
  		return pQuack.size();
  	}
  	
- 	public pairI<Integer,Gridspot> popTop()
+ 	public pairI<Integer,GridSpot> popTop()
  	{
  		return pQuack.poll();
  	}
- 	public void assignQuack(pair<Gridspot,Gridspot> a)
+ 	public void assignQuack(pair<GridSpot,GridSpot> a)
  	{
- 		pQuack = new PriorityQueue<pairI<Integer,Gridspot>>(_pQuacks.get(a));
+ 		pQuack = new PriorityQueue<pairI<Integer,GridSpot>>(_pQuacks.get(a));
  	}
  	
  	public void clearQuack()
@@ -66,9 +67,9 @@ import java.awt.Color;
  		pQuack.clear();
  	}
  	
- 	public void storeQuack(pair<Gridspot,Gridspot> a)
+ 	public void storeQuack(pair<GridSpot,GridSpot> a)
  	{
- 		_pQuacks.put(a, new PriorityQueue<pairI<Integer,Gridspot>>(pQuack));
+ 		_pQuacks.put(a, new PriorityQueue<pairI<Integer,GridSpot>>(pQuack));
  		clearQuack();
  	}
  	
