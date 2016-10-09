@@ -1,3 +1,5 @@
+package module.src.main.java;
+
 
 public class pair<L,R> {
     public L l;
