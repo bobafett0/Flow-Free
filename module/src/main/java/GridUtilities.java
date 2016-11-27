@@ -5,7 +5,7 @@ public class GridUtilities {
 	
 	public static boolean isFilled(Grid grid)
 	{		
-		GridSpot[][] gridSpotArray = grid.getGrid();
+		GridSpot[][] gridSpotArray = grid.GetGrid();
 		for(int i = 0; i < gridSpotArray.length; i++ )
 		{
 			for(int u = 0; u < gridSpotArray[i].length; u++)
@@ -16,4 +16,6 @@ public class GridUtilities {
 		}
 		return true;
 	}
+
+	
 }

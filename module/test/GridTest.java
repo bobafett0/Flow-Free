@@ -15,38 +15,77 @@ public class GridTest {
 	 */
 	
 	@Test
-	public void headAndTailStartingPointsAreNotSame() throws Exception {
-		System.out.println("Running Test");
-		
+	public void allStartingPairsAreUnique4() throws Exception {
 		Grid grid = new Grid(); 
-		Random rand = new Random();
-		int squWidth = 4+rand.nextInt(6);
-		
-		grid.initialize(squWidth);
-		ArrayList<StartingPair> startingPairs = grid.getStartingPairs();
-				
-		for(int i = 0; i < startingPairs.size(); i++){		
-			for(int j = 0; j < startingPairs.size(); j++){
-				
-				if(startingPairs.get(i).getL().equals(startingPairs.get(i).getR())) {
-					throw new Exception();
-				}
-			}
-		}
-//		fail("Not yet implemented");
-	}
-	
-	public void checkAgainstList(ArrayList<StartingPair> startingPairs, GridSpot gridSpot )
-	{
-		
+		int squWidth = 4;	
+		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
 	@Test
-	public void startingPointsDontShareSamePoints() {
-		
+	public void allStartingPairsAreUnique5() throws Exception {
+		Grid grid = new Grid(); 
+		int squWidth = 5;	
+		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
+	@Test
+	public void allStartingPairsAreUnique6() throws Exception {
+		Grid grid = new Grid(); 
+		int squWidth = 6;	
+		checkStartingPairUniqueness(grid,squWidth);
+	}
 	
-//	public 
-
+	@Test
+	public void allStartingPairsAreUnique7() throws Exception {
+		Grid grid = new Grid(); 
+		int squWidth = 7;	
+		checkStartingPairUniqueness(grid,squWidth);
+	}
+	
+	@Test
+	public void allStartingPairsAreUnique8() throws Exception {
+		Grid grid = new Grid(); 
+		int squWidth = 8;	
+		checkStartingPairUniqueness(grid,squWidth);
+	}
+	
+	@Test
+	public void allStartingPairsAreUnique9() throws Exception {
+		Grid grid = new Grid(); 
+		int squWidth = 9;	
+		checkStartingPairUniqueness(grid,squWidth);
+	}
+	
+	@Test
+	public void allStartingPairsAreUnique10() throws Exception {
+		Grid grid = new Grid(); 
+		int squWidth = 10;	
+		checkStartingPairUniqueness(grid,squWidth);
+	}
+	
+	private void checkStartingPairUniqueness(Grid grid, int squWidth) throws Exception{
+		grid.initialize(squWidth);
+		ArrayList<StartingPair> startingPairs = grid.GetStartingPairs();
+				
+		for(int i = 0; i < startingPairs.size(); i++){		
+			checkAgainstList(startingPairs,startingPairs.get(i).getL());
+			checkAgainstList(startingPairs,startingPairs.get(i).getR());
+		}
+	}
+	
+	private void checkAgainstList(ArrayList<StartingPair> startingPairs, GridSpot gridSpot ) throws Exception
+	{
+		int count = 0;
+		for(int i = 0; i < startingPairs.size(); i++){			
+			if(startingPairs.get(i).getL().equals(gridSpot)) {
+				count++;
+			}
+			if(startingPairs.get(i).getR().equals(gridSpot)){
+				count++;
+			}
+			if(count > 1){
+				throw new Exception("Given GridSpot was present in the starting pairs list more than once.");
+			}
+		}
+	}
 }

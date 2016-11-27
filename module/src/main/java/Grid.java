@@ -12,41 +12,51 @@ import java.util.Stack;
 import wheelsunh.users.Frame;
 
 public class Grid {
-	public static int frameWidth = 800, frameHieght = 800;
-	private GridSpot[][] GridSpotArray;
+	private GridSpot[][] gridSpotArray;
 	private ArrayList<StartingPair> startingPairs;
-	public int cIrcleH, _squWidth;
-	public Color[] colors = { Color.blue, Color.cyan, Color.white,
+	private Color[] colors = { Color.blue, Color.cyan, Color.white,
 			Color.darkGray,	Color.green, Color.magenta, Color.orange, 
 			Color.gray, Color.red, Color.yellow, Color.black,
 			Color.pink, Color.lightGray };
 	private Stack<GridSpot> _spaces;
-		
+	public int cIrcleH, _squWidth;
+
 	public Grid ()
 	{		
 //		GridSpotArray = new Gridspot[][];
 	}
 
-	public GridSpot[][] getGrid()
+	public GridSpot[][] GetGrid()
 	{
-		return GridSpotArray;
+		return gridSpotArray;
 	}
 
-	public ArrayList<StartingPair> getStartingPairs()
+	public ArrayList<StartingPair> GetStartingPairs()
 	{
 		return startingPairs;
 	}
 	
-	public void initialize(int squWidth)
+	public void initialize(int squWidth) throws Exception
 	{
 		GridSpot[][] grid = constructGrid(squWidth);
-		startingPairs = generateRandomStartingPairs(grid,squWidth);
+		ArrayList<GridSpot> gridSpotsToBeStartingPairs = getRandomGridSpotsToBeStartingPairs(grid,squWidth);
+		startingPairs = generateStartingPairs(gridSpotsToBeStartingPairs);
+		gridSpotArray = grid;
+	}
+
+	public void initialize(int squWidth,int numStartingPairs) throws Exception
+	{
+		GridSpot[][] grid = constructGrid(squWidth);
+		ArrayList<GridSpot> gridSpotsToBeStartingPairs = getRandomGridSpotsToBeStartingPairs(grid,numStartingPairs);
+		startingPairs = generateStartingPairs(gridSpotsToBeStartingPairs);
+		gridSpotArray = grid;
 	}
 	
 	public void initialize(int squWidth , ArrayList<StartingPair> startingPairs)
 	{
 		GridSpot[][] grid = constructGrid(squWidth);
 		this.startingPairs = startingPairs;
+		gridSpotArray = grid;
 	}
 	
 //	Creates the two dimentional array of "gridspots," in other words, 
@@ -65,11 +75,25 @@ public class Grid {
 		}
 		return grid;
 	}
-
-	private ArrayList<StartingPair> generateRandomStartingPairs( GridSpot[][] grid, int numStartingPairs )
+	
+	private ArrayList<StartingPair> generateStartingPairs(ArrayList<GridSpot> gridSpotList) throws Exception
+	{
+		if(gridSpotList.size() % 2 != 0){
+			throw new Exception("gridSpotList is not even");
+		}
+		
+		ArrayList<StartingPair> ret = new ArrayList<StartingPair>();
+		for(int i = 0; i < gridSpotList.size(); i=i+2)
+		{			
+			ret.add(new StartingPair(gridSpotList.get(i),gridSpotList.get(i+1),colors[i%2]));
+		}
+		return ret;		
+	}
+	
+	private ArrayList<GridSpot> getRandomGridSpotsToBeStartingPairs( GridSpot[][] grid, int numStartingPairs )
 	{
 		int squWidth = grid.length;
-		ArrayList<StartingPair> pairs = new ArrayList<StartingPair>();
+		ArrayList<GridSpot> pairs = new ArrayList<GridSpot>();
 		Random rand = new Random();
 		GridSpot headSpot, tailSpot;
 		int xIndexHeadSpot, yIndexHeadSpot, xIndexTailSpot, yIndexTailSpot;
@@ -82,8 +106,9 @@ public class Grid {
 			yIndexTailSpot = rand.nextInt(squWidth);
 			tailSpot = grid[xIndexTailSpot][yIndexTailSpot];
 			
-			if(headSpot != tailSpot){
-				pairs.add(new StartingPair(headSpot,tailSpot,colors[i]));
+			if(headSpot != tailSpot && !pairs.contains(headSpot) && !pairs.contains(tailSpot)){
+				pairs.add(headSpot);
+				pairs.add(tailSpot);
 			}
 			else{
 				i--;

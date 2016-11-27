@@ -1,10 +1,10 @@
 package module.src.main.java;
 
 
-public class pair<L,R> {
+public class Pair<L,R> {
     public L l;
     public R r;
-    public pair(L l, R r){
+    public Pair(L l, R r){
         this.l = l;
         this.r = r;
     }
