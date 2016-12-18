@@ -25,29 +25,73 @@ public class LeesWayPointsTest {
 		cycleThroughStartingPairs(grid);
    	}
 
+    @Test
+	public void pathsCompletedWithWayPointsSize3() throws Exception {
+        Grid grid = new Grid();
+        grid.initialize(3,2);
+		cycleThroughStartingPairs(grid);
+   	}
+
+    @Test
+	public void pathsCompletedWithWayPointsSize4() throws Exception {
+        Grid grid = new Grid();
+        grid.initialize(4,3);
+		cycleThroughStartingPairs(grid);
+   	}
+
+    @Test
+	public void pathsCompletedWithWayPointsSize5() throws Exception {
+        Grid grid = new Grid();
+        grid.initialize(5,4);
+		cycleThroughStartingPairs(grid);
+   	}
+
+    @Test
+	public void pathsCompletedWithWayPointsSize6() throws Exception {
+        Grid grid = new Grid();
+        grid.initialize(6,5);
+		cycleThroughStartingPairs(grid);
+   	}
+
+    @Test
+	public void pathsCompletedWithWayPointsSize7() throws Exception {
+        Grid grid = new Grid();
+        grid.initialize(7,6);
+		cycleThroughStartingPairs(grid);
+   	}
+
+    @Test
+	public void pathsCompletedWithWayPointsSize8() throws Exception {
+        Grid grid = new Grid();
+        grid.initialize(8,7);
+		cycleThroughStartingPairs(grid);
+   	}
+
     private void cycleThroughStartingPairs(Grid grid) {
         LeesWayPoints leeWayPoints = new LeesWayPoints();
         leeWayPoints.InitializeWayPointDics(grid.GetStartingPairs(),grid.GetGrid());
         leeWayPoints.placeAllWayPoints(grid.GetStartingPairs());
-        
-        WayPoints wayPoints = leeWayPoints.wayPointDic.get(grid.GetStartingPairs().get(0));
 
         GridSpot endPoint = null;
         for(int u = 0; u < grid.GetStartingPairs().size(); u++){
-            int initialSize = wayPoints.get(grid.GetStartingPairs().get(u).getR()).size();
+            StartingPair curPair = grid.GetStartingPairs().get(u);
+            WayPoints wayPoints = leeWayPoints.wayPointDic.get(curPair);
+            int initialSize = wayPoints.get(curPair.getR()).size();
             for(int i = 0; i < initialSize; i++) {
-                endPoint = findGoal(grid.GetGrid(),wayPoints,grid.GetStartingPairs().get(0).getR());
-                Assert.assertTrue(endPoint == grid.GetStartingPairs().get(0).getL());
+                endPoint = findGoal(grid.GetGrid(),wayPoints,curPair.getR());
+                Assert.assertTrue(endPoint == curPair.getL());
             }
         }
     }
 	
 	private GridSpot findGoal(GridSpot[][] grid, WayPoints wayPoints, GridSpot startingPlace) {
         PriorityQueue<PairI<Integer,GridSpot>> curPriorityQueue = wayPoints.get(startingPlace);
-        PairI<Integer,GridSpot> curPair = null;        
+        PairI<Integer,GridSpot> curPair = curPriorityQueue.poll();
         while ( curPriorityQueue.size() > 0) {
-            curPair = curPriorityQueue.poll();
         	curPriorityQueue = wayPoints.get(curPair.getR());
+        	if(curPriorityQueue.size() > 0) {
+        		curPair = curPriorityQueue.peek();
+        	}
         }
         
 		return curPair.getR();
