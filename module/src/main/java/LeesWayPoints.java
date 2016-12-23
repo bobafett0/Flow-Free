@@ -3,6 +3,7 @@ package module.src.main.java;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -63,24 +64,24 @@ public class LeesWayPoints {
 			belowCur = GridSpotArray[current.XIndex][current.YIndex+1];
 		}
 		if (rightOfCur != null && !occupiedGridSpots.contains(rightOfCur)) {
-			wayPoints.get(rightOfCur).add(new PairI<Integer,GridSpot>(new Integer(distance+1),current));
+			wayPoints.get(rightOfCur).add(current);
 			exploreAndPlace(occupiedGridSpots,rightOfCur,distance+1,goal,wayPoints);
 		}
 		if (leftOfCur != null && !occupiedGridSpots.contains(leftOfCur)) {
-			wayPoints.get(leftOfCur).add(new PairI<Integer,GridSpot>(new Integer(distance+1),current));
+			wayPoints.get(leftOfCur).add(current);
 			exploreAndPlace(occupiedGridSpots,leftOfCur,distance+1,goal,wayPoints);
 		}
 		if (aboveCur != null && !occupiedGridSpots.contains(aboveCur)) {
-			wayPoints.get(aboveCur).add(new PairI<Integer,GridSpot>(new Integer(distance+1),current));
+			wayPoints.get(aboveCur).add(current);
 			exploreAndPlace(occupiedGridSpots,aboveCur,distance+1,goal,wayPoints);
 		}
 		if (belowCur != null && !occupiedGridSpots.contains(belowCur)) {
-			wayPoints.get(belowCur).add(new PairI<Integer,GridSpot>(new Integer(distance+1),current));
+			wayPoints.get(belowCur).add(current);
 			exploreAndPlace(occupiedGridSpots,belowCur,distance+1,goal,wayPoints);
 		}
 	}
 	
-	public class WayPoints extends Hashtable<GridSpot,PriorityQueue<PairI<Integer,GridSpot>>> {
+	public class WayPoints extends HashSet<GridSpot> {
 
 		/**
 		 * 

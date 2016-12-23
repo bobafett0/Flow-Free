@@ -3,6 +3,7 @@ package module.test;
 import static org.junit.Assert.*;
 //import com.jcabi.aspects.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Random;
 import module.src.main.java.*;
@@ -86,9 +87,18 @@ public class LeesWayPointsTest {
 	
 	private GridSpot findGoal(GridSpot[][] grid, WayPoints wayPoints, GridSpot startingPlace) {
         PriorityQueue<PairI<Integer,GridSpot>> curPriorityQueue = wayPoints.get(startingPlace);
-        PairI<Integer,GridSpot> curPair = curPriorityQueue.poll();
+        HashSet<GridSpot> neighbors = new HashSet<GridSpot>();
+        while( curPriorityQueue.size() > 0) {
+            neighbors.add(curPriorityQueue.poll().getR());
+        }
+
+        
+
+        PairI<Integer,GridSpot> curPair = null;
         while ( curPriorityQueue.size() > 0) {
+        	curPair = curPriorityQueue.poll();
         	curPriorityQueue = wayPoints.get(curPair.getR());
+        	
         	if(curPriorityQueue.size() > 0) {
         		curPair = curPriorityQueue.peek();
         	}
