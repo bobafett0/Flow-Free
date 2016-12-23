@@ -81,7 +81,7 @@ public class LeesWayPoints {
 		}
 	}
 	
-	public class WayPoints extends HashSet<GridSpot> {
+	public class WayPoints extends Hashtable<GridSpot,HashSet<GridSpot>> {
 
 		/**
 		 * 
