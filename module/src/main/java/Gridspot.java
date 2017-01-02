@@ -40,13 +40,6 @@ import java.awt.Color;
  		
  		return pQuack.add(cur);
  	}
-// 	public PairI<Integer,GridSpot> retrieve()
-// 	{
-// 		if(pQuack.size() > 0)
-// 			return pQuack.peek();
-// 		else
-// 			return new PairI<Integer,GridSpot>(new Integer(4),new GridSpot());
-// 	}
  	
  	public int sizeQuack()
  	{
