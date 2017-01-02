@@ -2,8 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Bill/Documents/GitHub/Flow-Free/wheelsunh.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/Bill/Documents/GitHub/Flow-Free/bin"/>
+	<classpathentry kind="lib" path="D:/GitHub/Flow-Free/wheelsunh.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

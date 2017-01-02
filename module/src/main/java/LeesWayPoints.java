@@ -10,40 +10,53 @@ import java.util.PriorityQueue;
 
 public class LeesWayPoints {
 	
-	public Hashtable<StartingPair,WayPoints> wayPointDic;
+//	public Hashtable<StartingPair,WayPoints> WayPointDic;
 	public GridSpot[][] GridSpotArray;
+	public ArrayList<StartingPair> StartingPairs;
+	public Hashtable<GridSpot,StartingPair> GridSpotIdentifier;
 
 	public void InitializeWayPointDics (ArrayList<StartingPair> startingPairs, GridSpot[][] gridSpotArray)
 	{
-		wayPointDic = new Hashtable<StartingPair,WayPoints>();
-		for (int i = 0; i < startingPairs.size(); i++) {
-			StartingPair curPair = startingPairs.get(i);
-			wayPointDic.put(curPair, new WayPoints());
-			InitializeWayPoints(wayPointDic.get(curPair),gridSpotArray);
-		}
+//		WayPointDic = new Hashtable<StartingPair,WayPoints>();
+//		for (int i = 0; i < startingPairs.size(); i++) {
+//			StartingPair curPair = startingPairs.get(i);
+//			WayPointDic.put(curPair, new WayPoints());
+//			InitializeWayPoints(WayPointDic.get(curPair),gridSpotArray);
+//		}
+		GridSpotIdentifier = new Hashtable<GridSpot,StartingPair>();
+		StartingPairs = startingPairs;
 		GridSpotArray = gridSpotArray;
 	}
 
-	private void InitializeWayPoints(WayPoints wayPointCol, GridSpot[][] gridSpotArray)
-	{
-		for(int i = 0; i < gridSpotArray.length; i++) {
-			for(int u = 0; u < gridSpotArray[i].length; u++){
-				wayPointCol.put(gridSpotArray[i][u],new PriorityQueue<PairI<Integer,GridSpot>>());
-			}
-		}
-	}
+//	private void InitializeWayPoints(WayPoints wayPointCol, GridSpot[][] gridSpotArray)
+//	{
+//		for(int i = 0; i < gridSpotArray.length; i++) {
+//			for(int u = 0; u < gridSpotArray[i].length; u++){
+//				wayPointCol.put(gridSpotArray[i][u],new HashSet<GridSpot>());
+//			}
+//		}
+//	}
 
-	public void placeAllWayPoints (ArrayList<StartingPair> startingPairs) {
-		for (int i = 0; i < startingPairs.size(); i++) {
-			StartingPair currentPair = startingPairs.get(i);
-			WayPoints wayPointGroup = wayPointDic.get(currentPair);
-			exploreAndPlace(new ArrayList<GridSpot>(),currentPair.getL(),0,currentPair.getR(),wayPointGroup);
-		}
+	public Hashtable<GridSpot,StartingPair> placeAllWayPoints (ArrayList<StartingPair> startingPairs) {
+//		for (int i = 0; i < startingPairs.size(); i++) {
+//			StartingPair currentPair = startingPairs.get(i);
+		exploreAndPlace(new ArrayList<GridSpot>(),startingPairs.get(0).getL(),0);
+//		}
+		return GridSpotIdentifier;
 	}
-
-	private void exploreAndPlace (ArrayList<GridSpot> occupiedGridSpots, GridSpot current,int distance,GridSpot goal,WayPoints wayPoints) {
+         
+	
+	private boolean exploreAndPlace (ArrayList<GridSpot> occupiedGridSpots, GridSpot current,int startingPairIndex) {
+		if(startingPairIndex > StartingPairs.size() - 1){
+			return SolutionVerifier.IsGridFilled(GridSpotIdentifier, GridSpotArray);
+		}
+		StartingPair currentPair = StartingPairs.get(startingPairIndex);
+		GridSpot goal = currentPair.getR();
 		if(current == goal){
-			return;
+//			StartingPair nextPair = StartingPairs.get(startingPairIndex+1);
+//			wayPoints = WayPointDic.get(nextPair);
+			GridSpotIdentifier.put(current, currentPair);
+			return exploreAndPlace(occupiedGridSpots,currentPair.getL(),startingPairIndex+1);
 		}
 		occupiedGridSpots.add(current);
 		GridSpot rightOfCur = null;
@@ -64,30 +77,35 @@ public class LeesWayPoints {
 			belowCur = GridSpotArray[current.XIndex][current.YIndex+1];
 		}
 		if (rightOfCur != null && !occupiedGridSpots.contains(rightOfCur)) {
-			wayPoints.get(rightOfCur).add(current);
-			exploreAndPlace(occupiedGridSpots,rightOfCur,distance+1,goal,wayPoints);
+			GridSpotIdentifier.put(current, currentPair);
+			if(!exploreAndPlace(occupiedGridSpots,rightOfCur,startingPairIndex))
+				GridSpotIdentifier.remove(current);
+			else
+				return true;
 		}
 		if (leftOfCur != null && !occupiedGridSpots.contains(leftOfCur)) {
-			wayPoints.get(leftOfCur).add(current);
-			exploreAndPlace(occupiedGridSpots,leftOfCur,distance+1,goal,wayPoints);
+			GridSpotIdentifier.put(current, currentPair);
+			if(!exploreAndPlace(occupiedGridSpots,leftOfCur,startingPairIndex))
+				GridSpotIdentifier.remove(current);
+			else
+				return true;
 		}
 		if (aboveCur != null && !occupiedGridSpots.contains(aboveCur)) {
-			wayPoints.get(aboveCur).add(current);
-			exploreAndPlace(occupiedGridSpots,aboveCur,distance+1,goal,wayPoints);
+			GridSpotIdentifier.put(current, currentPair);
+			if(!exploreAndPlace(occupiedGridSpots,aboveCur,startingPairIndex))
+				GridSpotIdentifier.remove(current);
+			else
+				return true;
 		}
 		if (belowCur != null && !occupiedGridSpots.contains(belowCur)) {
-			wayPoints.get(belowCur).add(current);
-			exploreAndPlace(occupiedGridSpots,belowCur,distance+1,goal,wayPoints);
+			GridSpotIdentifier.put(current, currentPair);
+			if(!exploreAndPlace(occupiedGridSpots,belowCur,startingPairIndex))
+				GridSpotIdentifier.remove(current);
+			else
+				return true;
 		}
-	}
-	
-	public class WayPoints extends Hashtable<GridSpot,HashSet<GridSpot>> {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
+		
+		return false;
 	}
 }
 
