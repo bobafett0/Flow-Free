@@ -20,3 +20,6 @@
 /GridTestTest.class
 bin
 .metadata
+**/.classpath
+bin\*
+\.classpath
