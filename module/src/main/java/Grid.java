@@ -12,8 +12,8 @@ import java.util.Stack;
 import wheelsunh.users.Frame;
 
 public class Grid {
-	private GridSpot[][] gridSpotArray;
-	private ArrayList<StartingPair> startingPairs;
+	private GridSpot[][] _gridSpotArray;
+	private ArrayList<StartingPair> _startingPairs;
 	private Color[] colors = { Color.blue, Color.cyan, Color.white,
 			Color.darkGray,	Color.green, Color.magenta, Color.orange, 
 			Color.gray, Color.red, Color.yellow, Color.black,
@@ -28,35 +28,46 @@ public class Grid {
 
 	public GridSpot[][] GetGrid()
 	{
-		return gridSpotArray;
+		return _gridSpotArray;
 	}
 
 	public ArrayList<StartingPair> GetStartingPairs()
 	{
-		return startingPairs;
+		return _startingPairs;
 	}
 	
 	public void initialize(int squWidth) throws Exception
 	{
 		GridSpot[][] grid = constructGrid(squWidth);
 		ArrayList<GridSpot> gridSpotsToBeStartingPairs = getRandomGridSpotsToBeStartingPairs(grid,squWidth);
-		startingPairs = generateStartingPairs(gridSpotsToBeStartingPairs);
-		gridSpotArray = grid;
+		_startingPairs = generateStartingPairs(gridSpotsToBeStartingPairs);
+		_gridSpotArray = grid;
 	}
 
 	public void initialize(int squWidth,int numStartingPairs) throws Exception
 	{
 		GridSpot[][] grid = constructGrid(squWidth);
 		ArrayList<GridSpot> gridSpotsToBeStartingPairs = getRandomGridSpotsToBeStartingPairs(grid,numStartingPairs);
-		startingPairs = generateStartingPairs(gridSpotsToBeStartingPairs);
-		gridSpotArray = grid;
+		_startingPairs = generateStartingPairs(gridSpotsToBeStartingPairs);
+		_gridSpotArray = grid;
 	}
 	
-	public void initialize(int squWidth , ArrayList<StartingPair> startingPairs)
+	public void initialize(int squWidth , ArrayList<Pair<Integer,Integer>> intStartingPairs) throws Exception
 	{
 		GridSpot[][] grid = constructGrid(squWidth);
-		this.startingPairs = startingPairs;
-		gridSpotArray = grid;
+		_gridSpotArray = grid;
+		ArrayList<GridSpot> gridSpotsToBeStartingPairs = generateDefinedStartingPairs(intStartingPairs);
+		_startingPairs = generateStartingPairs(gridSpotsToBeStartingPairs);
+	}
+
+	private ArrayList<GridSpot> generateDefinedStartingPairs ( ArrayList<Pair<Integer,Integer>> startingPairs) throws Exception
+	{
+		ArrayList<GridSpot> gridSpotsToBeMadeIntoPairs = new ArrayList<GridSpot>();
+		for(int i = 0; i < startingPairs.size(); i++){
+			Pair<Integer,Integer> curPair = startingPairs.get(i);
+			gridSpotsToBeMadeIntoPairs.add(_gridSpotArray[curPair.getL()][curPair.getR()]);
+		}		
+		return gridSpotsToBeMadeIntoPairs;
 	}
 	
 //	Creates the two dimentional array of "gridspots," in other words, 
