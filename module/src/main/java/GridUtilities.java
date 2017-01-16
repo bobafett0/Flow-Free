@@ -29,5 +29,20 @@ public class GridUtilities {
 		return gridSpots;
 	}
 
-	
+	public static ArrayList<GridSpot> getNeighbors(GridSpot current, GridSpot[][] gridSpotArray) {
+		ArrayList<GridSpot> ret = new ArrayList<GridSpot>();
+		if(current.XIndex + 1 < gridSpotArray.length) {
+			ret.add(gridSpotArray[current.XIndex+1][current.YIndex]);
+		}
+		if(current.XIndex - 1 >= 0) {
+			ret.add(gridSpotArray[current.XIndex-1][current.YIndex]);
+		}
+		if(current.YIndex - 1 >= 0) {
+			ret.add(gridSpotArray[current.XIndex][current.YIndex-1]);
+		}
+		if(current.YIndex + 1 < gridSpotArray[current.XIndex].length) {
+			ret.add(gridSpotArray[current.XIndex][current.YIndex+1]);
+		}
+		return ret;
+	}	
 }

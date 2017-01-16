@@ -1,3 +1,4 @@
+package module.src.main.java;
 
 import java.util.Hashtable;
 import java.util.PriorityQueue;
@@ -6,8 +7,8 @@ import java.util.Set;
 import java.util.ArrayList;
 // Calculate min and max distances for each pair
 public class PerformanceEnhancer {
-    private int infinity = 9999999999;
-    private Hashtable<GridSpot,GridSpot> Dijkstra (StartingPair curGridPair,GridSpot[][] gridSpotArray, Hashtable<GridSpot,StartingPair> GridSpotIdentifier ){
+    private int infinity = 999999999;
+    private void Dijkstra (StartingPair curGridPair,GridSpot[][] gridSpotArray, Hashtable<GridSpot,StartingPair> GridSpotIdentifier ){
         Hashtable<GridSpot,Integer> dist = new Hashtable<GridSpot,Integer>();
         Hashtable<GridSpot,GridSpot> prevs = new Hashtable<GridSpot,GridSpot>();
         PriorityQueue<PairI<Integer,GridSpot>> minQueue = new PriorityQueue<PairI<Integer,GridSpot>>();
@@ -31,15 +32,10 @@ public class PerformanceEnhancer {
         
         while(minQueue.size() > 0 ){
             GridSpot cur = minQueue.poll().getR();
-            ArrayList<GridSpot> neighbors = getNeighbors(cur);
+//            GridUtilities.getNeighbors(cur, gridSpotArray)
+            ArrayList<GridSpot> neighbors = GridUtilities.getNeighbors(cur,gridSpotArray);
 
         }
-
+        
     }
-
-    private ArrayList<GridSpot> getNeighbors (GridSpot current,Set<GridSpot> occupiedSpaces,GridSpot[][] gridSpotArray ) {
-        if(current.XIndex + 1 )
-
-    }
-
 }

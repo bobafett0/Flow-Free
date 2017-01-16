@@ -39,51 +39,17 @@ public class LeesWayPoints {
 				return exploreAndPlace(occupiedGridSpots,StartingPairs.get(startingPairIndex+1).getL() ,startingPairIndex+1);
 		}
 		occupiedGridSpots.add(current);
-		GridSpot rightOfCur = null;
-		GridSpot leftOfCur = null;
-		GridSpot aboveCur = null;
-		GridSpot belowCur = null;
+		ArrayList<GridSpot> neighbors = GridUtilities.getNeighbors(current,GridSpotArray);
 
-		if(current.XIndex + 1 < GridSpotArray.length) {
-			rightOfCur = GridSpotArray[current.XIndex+1][current.YIndex];
-		}
-		if(current.XIndex - 1 >= 0) {
-			leftOfCur = GridSpotArray[current.XIndex-1][current.YIndex];
-		}
-		if(current.YIndex - 1 >= 0) {
-			aboveCur = GridSpotArray[current.XIndex][current.YIndex-1];
-		}
-		if(current.YIndex + 1 < GridSpotArray.length) {
-			belowCur = GridSpotArray[current.XIndex][current.YIndex+1];
-		}
-
-		if ((rightOfCur != null && !occupiedGridSpots.contains(rightOfCur)) || rightOfCur == goal) {
-			GridSpotIdentifier.put(current, currentPair);
-			if(!exploreAndPlace(occupiedGridSpots,rightOfCur,startingPairIndex))
-				GridSpotIdentifier.remove(current);
-			else
-				return true;
-		}
-		if ((leftOfCur != null && !occupiedGridSpots.contains(leftOfCur)) || leftOfCur == goal) {
-			GridSpotIdentifier.put(current, currentPair);
-			if(!exploreAndPlace(occupiedGridSpots,leftOfCur,startingPairIndex))
-				GridSpotIdentifier.remove(current);
-			else
-				return true;
-		}
-		if ((aboveCur != null && !occupiedGridSpots.contains(aboveCur)) || aboveCur == goal) {
-			GridSpotIdentifier.put(current, currentPair);
-			if(!exploreAndPlace(occupiedGridSpots,aboveCur,startingPairIndex))
-				GridSpotIdentifier.remove(current);
-			else
-				return true;
-		}
-		if ((belowCur != null && !occupiedGridSpots.contains(belowCur)) || belowCur == goal) {
-			GridSpotIdentifier.put(current, currentPair);
-			if(!exploreAndPlace(occupiedGridSpots,belowCur,startingPairIndex))
-				GridSpotIdentifier.remove(current);
-			else
-				return true;
+		for(int i = 0; i < neighbors.size(); i++){
+			GridSpot curNeighbor = neighbors.get(i);
+			if ((curNeighbor != null && !occupiedGridSpots.contains(curNeighbor)) || curNeighbor == goal) {
+				GridSpotIdentifier.put(current, currentPair);
+				if(!exploreAndPlace(occupiedGridSpots,curNeighbor,startingPairIndex))
+					GridSpotIdentifier.remove(current);
+				else
+					return true;
+			}
 		}
 		occupiedGridSpots.remove(current);
 		return false;
