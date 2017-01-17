@@ -4,60 +4,62 @@ import static org.junit.Assert.*;
 //import com.jcabi.aspects.*;
 import java.util.ArrayList;
 import java.util.Random;
+
+import groovy.util.GroovyTestCase;
 import module.src.main.java.*;
 
 import org.junit.Test;
 
-public class GridTest {
+public class GridTest extends GroovyTestCase {
 
 	/*
 	 * No two Starting point Gridspots are the same at all 
 	 */
 	
 	@Test
-	public void allStartingPairsAreUnique4() throws Exception {
+	public void testAllStartingPairsAreUnique4() throws Exception {
 		Grid grid = new Grid(); 
 		int squWidth = 4;	
 		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
 	@Test
-	public void allStartingPairsAreUnique5() throws Exception {
+	public void testAllStartingPairsAreUnique5() throws Exception {
 		Grid grid = new Grid(); 
 		int squWidth = 5;	
 		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
 	@Test
-	public void allStartingPairsAreUnique6() throws Exception {
+	public void testAllStartingPairsAreUnique6() throws Exception {
 		Grid grid = new Grid(); 
 		int squWidth = 6;	
 		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
 	@Test
-	public void allStartingPairsAreUnique7() throws Exception {
+	public void testAllStartingPairsAreUnique7() throws Exception {
 		Grid grid = new Grid(); 
 		int squWidth = 7;	
 		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
 	@Test
-	public void allStartingPairsAreUnique8() throws Exception {
+	public void testAllStartingPairsAreUnique8() throws Exception {
 		Grid grid = new Grid(); 
 		int squWidth = 8;	
 		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
 	@Test
-	public void allStartingPairsAreUnique9() throws Exception {
+	public void testAllStartingPairsAreUnique9() throws Exception {
 		Grid grid = new Grid(); 
 		int squWidth = 9;	
 		checkStartingPairUniqueness(grid,squWidth);
 	}
 	
 	@Test
-	public void allStartingPairsAreUnique10() throws Exception {
+	public void testAllStartingPairsAreUnique10() throws Exception {
 		Grid grid = new Grid(); 
 		int squWidth = 10;	
 		checkStartingPairUniqueness(grid,squWidth);
